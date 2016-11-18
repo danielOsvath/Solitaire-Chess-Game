@@ -19,7 +19,41 @@ import java.util.stream.IntStream;
  */
 public class SoltrChessPTUI implements Observer {
 
+    private SoltrChessModel model;
+
     public SoltrChessPTUI( String fileName ) {
+        model = new SoltrChessModel(fileName);
+        initializeView();
+    }
+
+    /**
+     * Initializes view
+     */
+    public void initializeView()
+    {
+        this.model.addObserver(this);
+        update(this.model, null);
+
+    }
+
+    public void displayBoard()
+    {
+        int pos =1;
+        for(ChessPiece c:this.model.getBoard())
+        {
+            System.out.print(" | ");
+            System.out.print(c.getAbbr());
+            if (pos % 4 == 0) {
+                System.out.print(" | ");
+                System.out.println();
+            }
+            pos++;
+        }
+
+        for(ChessPiece c:this.model.getBoard())
+        {
+            System.out.println(c.toString());
+        }
     }
 
     // CONTROLLER
@@ -30,6 +64,7 @@ public class SoltrChessPTUI implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
+        displayBoard();
 
     }
 }
