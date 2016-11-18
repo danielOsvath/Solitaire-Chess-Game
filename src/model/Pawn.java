@@ -2,7 +2,7 @@ package model;
 /**
  * Class for Pawn chess piece
  */
-public class Pawn implements ChessPiece{
+public class Pawn implements BoardPiece {
     private int x;
     private int y;
     private String name = "Pawn";

@@ -3,7 +3,7 @@ package model;
 /**
  * This interface is created to represent a Chess Piece
  */
-public interface ChessPiece {
+public interface BoardPiece {
 
     /**
      * Gets the name of the chess piece

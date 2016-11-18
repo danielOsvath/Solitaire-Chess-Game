@@ -2,7 +2,6 @@ package model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Scanner;
@@ -32,7 +31,7 @@ public class SoltrChessModel extends Observable {
     /**
      * The Chess Solitaire Board
      */
-    private ArrayList<ChessPiece> board;
+    private ArrayList<BoardPiece> board;
 
     /**
      * Construct a SoltrChessModel
@@ -85,7 +84,7 @@ public class SoltrChessModel extends Observable {
 
     }
 
-    public ArrayList<ChessPiece> getBoard() {
+    public ArrayList<BoardPiece> getBoard() {
         return board;
     }
 }

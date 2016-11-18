@@ -2,7 +2,7 @@ package model;
 /**
  * Class for King chess piece
  */
-public class King implements ChessPiece{
+public class King implements BoardPiece {
     private int x;
     private int y;
     private String name = "King";

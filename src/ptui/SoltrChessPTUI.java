@@ -2,14 +2,8 @@ package ptui;
 
 import model.*;
 
-import static model.SoltrChessModel.DIMENSION;
-
-import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Scanner;
-import java.util.stream.IntStream;
 
 /**
  * Part of SoltrChess project.
@@ -39,7 +33,7 @@ public class SoltrChessPTUI implements Observer {
     public void displayBoard()
     {
         int pos =1;
-        for(ChessPiece c:this.model.getBoard())
+        for(BoardPiece c:this.model.getBoard())
         {
             System.out.print(" | ");
             System.out.print(c.getAbbr());
@@ -50,7 +44,7 @@ public class SoltrChessPTUI implements Observer {
             pos++;
         }
 
-        for(ChessPiece c:this.model.getBoard())
+        for(BoardPiece c:this.model.getBoard())
         {
             System.out.println(c.toString());
         }

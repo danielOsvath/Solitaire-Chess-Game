@@ -2,7 +2,7 @@ package model;
 /**
  * Class for Blank spot
  * */
-public class Blank implements ChessPiece{
+public class Blank implements BoardPiece {
     private int x;
     private int y;
     private String name = "Blank";
