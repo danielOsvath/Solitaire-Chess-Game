@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
  *
  * @author James Heliotis
  */
-public class SoltrChessPTUI {
+public class SoltrChessPTUI implements Observer {
 
     public SoltrChessPTUI( String fileName ) {
     }
@@ -27,4 +27,9 @@ public class SoltrChessPTUI {
     }
 
     // VIEW
+
+    @Override
+    public void update(Observable observable, Object o) {
+
+    }
 }
