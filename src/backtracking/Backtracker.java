@@ -1,4 +1,5 @@
-package backtracking;/*
+package backtracking;
+/*
  * backtracking.Backtracker.java
  *
  * This file comes from the backtracking lab. It should be useful

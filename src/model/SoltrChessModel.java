@@ -1,3 +1,6 @@
+/*
+ * SoltrChessModel.java
+ */
 package model;
 
 import java.io.File;
@@ -10,7 +13,7 @@ import java.util.Scanner;
  *  Definition for the model of the Solitaire Chess Game.
  *
  *  @author Nathan Cassata
- *  @author Daniel Osvath
+ *  @author Daniel Osvath Londono
  *
  */
 public class SoltrChessModel extends Observable {
@@ -43,8 +46,8 @@ public class SoltrChessModel extends Observable {
         try {
             Scanner sc = new Scanner(file);
             board = new ArrayList<>();
-            int iterAmt=0;
-            int x =0;
+            int iterAmt = 0;
+            int x = 0;
             int y = DIMENSION;
 
             while (iterAmt<(DIMENSION*DIMENSION)&&sc.hasNext())
@@ -66,9 +69,9 @@ public class SoltrChessModel extends Observable {
                     board.add(new Rook(x,y));
                 }
                 x++;
-                if(x==DIMENSION)
+                if(x == DIMENSION)
                 {
-                    x=0;
+                    x = 0;
                     y--;
                 }
 

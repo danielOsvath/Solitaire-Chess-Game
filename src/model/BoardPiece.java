@@ -1,7 +1,13 @@
+/*
+ * BoardPiece.java
+ */
 package model;
 
 /**
- * This interface is created to represent a Chess Piece
+ * This interface is created to represent a Chess Piece.
+ *
+ * @author Nathan Cassata
+ * @author Daniel Osvath Londono
  */
 public interface BoardPiece {
 
@@ -29,7 +35,6 @@ public interface BoardPiece {
      * Returns a String of the Chess Piece
      * @return The String
      */
-
     public String toString();
 
 }

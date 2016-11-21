@@ -3,6 +3,8 @@
  * Created 10 2015
  *
  * @author James Heliotis
+ * @author Nathan Cassata
+ * @author Daniel Osvath Londono
  */
 
 package gui;
@@ -27,6 +29,11 @@ public class SoltrChessGUI extends Application implements Observer {
     public void start( Stage stage ) {
     }
 
+    /**
+     *
+     * @param observable
+     * @param o
+     */
     @Override
     public void update(Observable observable, Object o) {
 

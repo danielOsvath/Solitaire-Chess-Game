@@ -1,7 +1,9 @@
+/*
+ * SoltrChessPTUI.java
+ */
 package ptui;
 
 import model.*;
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -10,6 +12,8 @@ import java.util.Observer;
  * Created 11 2015
  *
  * @author James Heliotis
+ * @author Nathan Cassata
+ * @author Daniel Osvath Londono
  */
 public class SoltrChessPTUI implements Observer {
 
@@ -23,15 +27,16 @@ public class SoltrChessPTUI implements Observer {
     /**
      * Initializes view
      */
-    public void initializeView()
-    {
+    public void initializeView() {
         this.model.addObserver(this);
         update(this.model, null);
 
     }
 
-    public void displayBoard()
-    {
+    /**
+     *
+     */
+    public void displayBoard() {
         int pos =1;
         for(BoardPiece c:this.model.getBoard())
         {
