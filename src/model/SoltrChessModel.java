@@ -21,7 +21,7 @@ public class SoltrChessModel extends Observable {
     /**
      * The default size of the board
      */
-    public static int DIMENSION = 4;
+    public static final int DIMENSION = 4;
 
     public static final String BLANK = "-";
     public static final String BISHOP = "B";
@@ -39,52 +39,58 @@ public class SoltrChessModel extends Observable {
     /**
      * Construct a SoltrChessModel
      */
-    public SoltrChessModel(String filename)
-    {
-        File file = new File(filename);
+    public SoltrChessModel(String filename) {
+        board = new ArrayList<>();
 
+        File file = new File(filename);
         try {
             Scanner sc = new Scanner(file);
-            board = new ArrayList<>();
-            int iterAmt = 0;
-            int x = 0;
-            int y = DIMENSION;
+            readBoardFromfile(sc);
 
-            while (iterAmt<(DIMENSION*DIMENSION)&&sc.hasNext())
-            {
-                String current = sc.next();
-                if(current.equals(BLANK)) {
-                    board.add(new Blank(x, y));
-                } else if(current.equals(BISHOP)) {
-                    board.add(new Bishop(x,y));
-                } else if(current.equals(KING)) {
-                    board.add(new King(x,y));
-                } else if(current.equals(KNIGHT)) {
-                    board.add(new Knight(x,y));
-                } else if(current.equals(PAWN)) {
-                    board.add(new Pawn(x,y));
-                } else if(current.equals(QUEEN)) {
-                    board.add(new Queen(x,y));
-                } else if(current.equals(ROOK)) {
-                    board.add(new Rook(x,y));
-                }
-                x++;
-                if(x == DIMENSION)
-                {
-                    x = 0;
-                    y--;
-                }
-
-                iterAmt++;
-            }
-
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             System.out.println("File Not Found");
             System.exit(1);
         }
 
+    }
 
+    /**
+     *
+     * @param sc
+     */
+    private void readBoardFromfile(Scanner sc){
+        //functionality needs to be added:  print message if file is malformed.
+
+        int iterAmt = 0;
+        int x = 0;
+        int y = DIMENSION;
+
+        while ( iterAmt<(DIMENSION*DIMENSION) && sc.hasNext() ) {
+            String current = sc.next();
+            if(current.equals(BLANK)) {
+                board.add(new Blank(x, y));
+            } else if(current.equals(BISHOP)) {
+                board.add(new Bishop(x,y));
+            } else if(current.equals(KING)) {
+                board.add(new King(x,y));
+            } else if(current.equals(KNIGHT)) {
+                board.add(new Knight(x,y));
+            } else if(current.equals(PAWN)) {
+                board.add(new Pawn(x,y));
+            } else if(current.equals(QUEEN)) {
+                board.add(new Queen(x,y));
+            } else if(current.equals(ROOK)) {
+                board.add(new Rook(x,y));
+            }
+            x++;
+            if(x == DIMENSION)
+            {
+                x = 0;
+                y--;
+            }
+
+            iterAmt++;
+        }
     }
 
     public ArrayList<BoardPiece> getBoard() {

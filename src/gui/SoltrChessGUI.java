@@ -27,6 +27,7 @@ public class SoltrChessGUI extends Application implements Observer {
      * @param stage container (window) in which to render the UI
      */
     public void start( Stage stage ) {
+
     }
 
     /**

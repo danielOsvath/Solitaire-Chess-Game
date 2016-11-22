@@ -37,7 +37,7 @@ public class SoltrChessPTUI implements Observer {
      *
      */
     public void displayBoard() {
-        int pos =1;
+        int pos = 1;
         for(BoardPiece c:this.model.getBoard())
         {
             System.out.print(" | ");
