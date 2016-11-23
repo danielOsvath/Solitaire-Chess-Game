@@ -68,17 +68,24 @@ public class SoltrChessModel extends Observable {
 
                 if(sc.hasNext()){
                     String current = sc.next();
+
+                    if(current.length() > 1) malformed();
+
                     BoardPiece piece = getPiece(i,j,current);
                     board[i][j] = piece;
                 }
                 else{
-                    System.out.println("Board in file is malformed.");
-                    System.exit(1);
+                    malformed();
                 }
             }
 
         }
 
+    }
+
+    private void malformed(){
+        System.out.println("Board in file is malformed.");
+        System.exit(1);
     }
 
     private BoardPiece getPiece(int x, int y, String type){
