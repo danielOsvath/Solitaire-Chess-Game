@@ -54,10 +54,10 @@ public class Backtracker {
      *         If there are none, return null.
      */
     public List< Configuration > solveWithPath( Configuration current ) {
-        // YOUR CODE HERE
+
         List<Configuration> steps = new LinkedList<>();
 
-        while (true) {
+        while (current != null) {
 
             if (current.isGoal()) {
 
@@ -73,14 +73,23 @@ public class Backtracker {
                     steps.add(step);
                     current = step;
                 }else {
-                    System.out.println("No Solution");
-                    return null;
+                    break;
                 }
 
             }
         }
+
+        System.out.println("No Solution");
+        return null;
     }
 
+    /**
+     * Determine if a child has a solution, if so return the child that
+     * leads to a solution, else return null.
+     *
+     * @param current current configuration
+     * @return child that produces solution or null.
+     */
     private Configuration aChildHasSolution(Configuration current){
 
         for (Configuration child : current.getSuccessors()) {
