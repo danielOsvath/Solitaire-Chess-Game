@@ -148,7 +148,7 @@ public class SoltrChessModel extends Observable {
      * Move a piece on the board.
      *
      * Precondition: VALID MOVE.
-     * Post Condition: Piece moved to new location replacing other piece.
+     * Post Condition: Piece moved to the new location replacing other piece.
      *
      * @param pieceX
      * @param pieceY
