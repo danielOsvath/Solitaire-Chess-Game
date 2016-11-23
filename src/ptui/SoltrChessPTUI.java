@@ -37,25 +37,16 @@ public class SoltrChessPTUI implements Observer {
      *
      */
     public void displayBoard() {
-        int pos = 1;
-        for(BoardPiece c:this.model.getBoard())
-        {
-            System.out.print(" | ");
-            System.out.print(c.getAbbr());
-            if (pos % 4 == 0) {
-                System.out.print(" | ");
-                System.out.println();
+        for(BoardPiece[] row : model.getBoard()){
+            for(BoardPiece element : row){
+                System.out.print(element.getAbbr() + " ");
             }
-            pos++;
-        }
-
-        for(BoardPiece c:this.model.getBoard())
-        {
-            System.out.println(c.toString());
+            System.out.print("\n");
         }
     }
 
     // CONTROLLER
+
     public void run() {
     }
 
@@ -63,7 +54,6 @@ public class SoltrChessPTUI implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        displayBoard();
-
+        displayBoard(); //update the board.
     }
 }
