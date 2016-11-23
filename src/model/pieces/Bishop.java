@@ -19,45 +19,17 @@ import java.util.regex.Matcher;
  */
 public class Bishop extends BoardPiece {
 
-    private String name = "Bishop";
-    private String abbr = "B";
-
     /**
      *
      * @param x
      * @param y
      */
     public Bishop(int x, int y) {
-        moveTypes = Arrays.asList("VERTICAL", "HORIZONTAL");
+        name = "Bishop";
+        abbr = "B";
+        moveTypes = Arrays.asList("DIAGONAL");
+
         this.x = x;
         this.y = y;
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public String getAbbr() {
-        return abbr;
-    }
-
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public String toString() {
-        return this.name + " at (" + x + ", " + y + ")";
     }
 }

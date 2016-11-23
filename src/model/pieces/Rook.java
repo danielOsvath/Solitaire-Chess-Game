@@ -1,34 +1,21 @@
 package model.pieces;
 
 import model.BoardPiece;
+import java.util.Arrays;
 
 /**
  * Class for Rook chess piece
  */
 public class Rook extends BoardPiece {
 
-    private String name = "Rook";
-    private String abbr = "R";
 
-    public Rook(int x, int y)
-    {
+    public Rook(int x, int y) {
+        name = "Rook";
+        abbr = "R";
+        moveTypes = Arrays.asList("HORIZONTAL", "VERTICAL");
+
         this.x = x;
-        this.y= y;
+        this.y = y;
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getAbbr() {
-        return abbr;
-    }
-
-
-    @Override
-    public String toString() {
-        return this.name + " at (" + x + ", " + y + ")";
-    }
 }

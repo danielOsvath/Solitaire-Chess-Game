@@ -11,23 +11,38 @@ import java.util.List;
  * @author Nathan Cassata
  * @author Daniel Osvath Londono
  */
-public abstract class BoardPiece {
+public class BoardPiece {
 
+    /* Types of moves a figure can make. */
     public List<String> moveTypes;
+
+    /* X coordinate of the figure, first coordinate in 2D array. */
     public int x;
+
+    /* Y coordinate of the figure, second coordinate in 2D array. */
     public int y;
+
+    /* Name pf the figure */
+    public String name;
+
+    /* Abbreviation of the figure */
+    public String abbr;
 
     /**
      * Gets the name of the chess piece
      * @return chess piece name
      */
-    public abstract String getName();
+    public String getName(){
+        return this.name;
+    }
 
     /**
      * Gets the abbreviation of the chess piece
      * @return the abbreviation
      */
-    public abstract String getAbbr();
+    public String getAbbr(){
+        return abbr;
+    }
 
     /**
      * Determines if chess piece can move to that coordinate.
@@ -75,10 +90,22 @@ public abstract class BoardPiece {
     }
 
     /**
+     * Move board piece to new location
+     *
+     * @param toX
+     * @param toY
+     */
+    public void moveTo(int toX, int toY){
+        this.x = toX;
+        this.y = toY;
+    }
+    /**
      * Returns a String of the Chess Piece
      * @return The String
      */
-    public abstract String toString();
+    public  String toString(){
+        return this.name + " at (" + x + ", " + y + ")";
+    }
 
 
 }
