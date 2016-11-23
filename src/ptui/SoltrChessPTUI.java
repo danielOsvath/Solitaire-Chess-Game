@@ -89,8 +89,9 @@ public class SoltrChessPTUI implements Observer {
                 case "restart":
 
                     System.out.println("Restarting game. ");
-                    model = new SoltrChessModel(originalfile);
-                    displayBoard();
+                    this.model = new SoltrChessModel(originalfile);
+                    initializeView();
+                    checkGoal();
                     break;
 
                 case "hint":
