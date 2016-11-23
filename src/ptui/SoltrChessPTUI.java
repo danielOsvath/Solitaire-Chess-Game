@@ -38,7 +38,6 @@ public class SoltrChessPTUI implements Observer {
     public void initializeView() {
         this.model.addObserver(this);
         update(this.model, null);
-
     }
 
     /**
@@ -135,6 +134,9 @@ public class SoltrChessPTUI implements Observer {
 
     }
 
+    /**
+     *
+     */
     private void checkGoal(){
         if(model.isGoal()) System.out.println("You won. Congratulations!");
     }

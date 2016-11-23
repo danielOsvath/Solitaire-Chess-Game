@@ -8,7 +8,7 @@ package backtracking;
 import java.util.Collection;
 
 /**
- * Class Purpose
+ * The configuration class for backtracking.
  *
  * @author Daniel Osvath Londono
  * @author Nathan Cassata

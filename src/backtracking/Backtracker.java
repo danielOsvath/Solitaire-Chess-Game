@@ -7,6 +7,7 @@ package backtracking;
  * implement.
  */
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,9 +18,11 @@ import java.util.Optional;
  * 
  * @author sps (Sean Strout @ RIT CS)
  * @author jeh (James Heliotis @ RIT CS)
+ * @author Daniel Osvath Londono
+ * @author Nathan Cassata
  */
 public class Backtracker {
-    
+
     /**
      * Try find a solution, if one exists, for a given configuration.
      * 
@@ -32,6 +35,7 @@ public class Backtracker {
         } else {
             for (Configuration child : config.getSuccessors()) {
                 if (child.isValid()) {
+                    //steps.add(child);
                     Optional<Configuration> sol = solve(child);
                     if (sol.isPresent()) {
                         return sol;
@@ -51,7 +55,12 @@ public class Backtracker {
      */
     public List< Configuration > solveWithPath( Configuration current ) {
         // YOUR CODE HERE
-        return null;
+        List<Configuration> steps = new LinkedList<>();
+
+        //IF CURRENT IS GOAL RETURN EMPTY LIST.
+        //ELSE KEEP TRACK of last correct move
+        //append linked lists to each other and drop invalid branches.
+        return steps;
     }
 
 }
