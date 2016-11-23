@@ -57,10 +57,39 @@ public class Backtracker {
         // YOUR CODE HERE
         List<Configuration> steps = new LinkedList<>();
 
-        //IF CURRENT IS GOAL RETURN EMPTY LIST.
-        //ELSE KEEP TRACK of last correct move
-        //append linked lists to each other and drop invalid branches.
-        return steps;
+        while (true) {
+
+            if (current.isGoal()) {
+
+                steps.add(current);
+
+                return steps;
+
+            } else {
+
+                Configuration step = aChildHasSolution(current);
+
+                if(aChildHasSolution(current) != null){
+                    steps.add(step);
+                    current = step;
+                }else {
+                    System.out.println("No Solution");
+                    return null;
+                }
+
+            }
+        }
+    }
+
+    private Configuration aChildHasSolution(Configuration current){
+
+        for (Configuration child : current.getSuccessors()) {
+            if (solve(child) != null) {
+                return child;
+            }
+        }
+
+        return null;
     }
 
 }
