@@ -36,13 +36,13 @@ public class SoltrChessModel extends Observable {
     /**
      * The Chess Solitaire Board
      */
-    private ArrayList<BoardPiece> board;
+    private BoardPiece[][] board;
 
     /**
      * Construct a SoltrChessModel
      */
     public SoltrChessModel(String filename) {
-        board = new ArrayList<>();
+        board = new BoardPiece[DIMENSION][DIMENSION];
 
         File file = new File(filename);
         try {
@@ -61,41 +61,39 @@ public class SoltrChessModel extends Observable {
      * @param sc
      */
     private void readBoardFromfile(Scanner sc){
-        //functionality needs to be added:  print message if file is malformed.
 
-        int iterAmt = 0;
-        int x = 0;
-        int y = DIMENSION;
+        for (int i = 0; i < DIMENSION; i++){
 
-        while ( iterAmt<(DIMENSION*DIMENSION) && sc.hasNext() ) {
-            String current = sc.next();
-            if(current.equals(BLANK)) {
-                board.add(new Blank(x, y));
-            } else if(current.equals(BISHOP)) {
-                board.add(new Bishop(x,y));
-            } else if(current.equals(KING)) {
-                board.add(new King(x,y));
-            } else if(current.equals(KNIGHT)) {
-                board.add(new Knight(x,y));
-            } else if(current.equals(PAWN)) {
-                board.add(new Pawn(x,y));
-            } else if(current.equals(QUEEN)) {
-                board.add(new Queen(x,y));
-            } else if(current.equals(ROOK)) {
-                board.add(new Rook(x,y));
-            }
-            x++;
-            if(x == DIMENSION)
-            {
-                x = 0;
-                y--;
+            for (int j = 0; j < DIMENSION; j++) {
+
+                if(sc.hasNext()){
+                    String current = sc.next();
+                    BoardPiece piece = getPiece(i,j,current);
+                    board[i][j] = piece;
+                }
+                else{
+                    System.out.println("Board in file is malformed.");
+                    System.exit(1);
+                }
             }
 
-            iterAmt++;
+        }
+
+    }
+
+    private BoardPiece getPiece(int x, int y, String type){
+        switch (type){
+            case BISHOP: return new Bishop(x,y);
+            case KING: return new King(x,y);
+            case KNIGHT: return new Knight(x,y);
+            case PAWN: return new Pawn(x,y);
+            case QUEEN: return new Queen(x,y);
+            case ROOK: return new Rook(x,y);
+            default: return new Blank(x,y);
         }
     }
 
-    public ArrayList<BoardPiece> getBoard() {
+    public BoardPiece[][] getBoard() {
         return board;
     }
 }

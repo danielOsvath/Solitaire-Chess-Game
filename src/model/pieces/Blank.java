@@ -54,7 +54,7 @@ public class Blank implements BoardPiece {
      * @return
      */
     @Override
-    public boolean canMove(int x, int y) {
+    public boolean canMoveTo(int x, int y) {
         return false;
     }
 

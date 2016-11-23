@@ -39,7 +39,7 @@ public class Rook implements BoardPiece {
      * @return
      */
     @Override
-    public boolean canMove(int x, int y) {
+    public boolean canMoveTo(int x, int y) {
 
         ArrayList<int[]> availableMoves = new ArrayList<>();
         int[] desiredLoc = {x,y};

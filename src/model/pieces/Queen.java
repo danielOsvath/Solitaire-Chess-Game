@@ -6,6 +6,7 @@ import model.BoardPiece;
  * Class for Queen chess piece
  */
 public class Queen implements BoardPiece {
+
     private int x;
     private int y;
     private String name = "Queen";
@@ -28,7 +29,7 @@ public class Queen implements BoardPiece {
     }
 
     @Override
-    public boolean canMove(int x, int y) {
+    public boolean canMoveTo(int x, int y) {
         return false;
     }
 

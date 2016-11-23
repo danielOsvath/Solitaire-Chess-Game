@@ -29,7 +29,7 @@ public interface BoardPiece {
      * @param y y value
      * @return true: if can move to that spot, false: if cannot move to that spot
      */
-    public boolean canMove(int x, int y);
+    public boolean canMoveTo(int x, int y);
 
     /**
      * Returns a String of the Chess Piece
