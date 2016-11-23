@@ -42,6 +42,7 @@ public class SoltrChessModel extends Observable {
      * Construct a SoltrChessModel
      */
     public SoltrChessModel(String filename) {
+
         board = new BoardPiece[DIMENSION][DIMENSION];
 
         File file = new File(filename);
@@ -83,11 +84,21 @@ public class SoltrChessModel extends Observable {
 
     }
 
+    /**
+     *
+     */
     private void malformed(){
         System.out.println("Board in file is malformed.");
         System.exit(1);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param type
+     * @return
+     */
     private BoardPiece getPiece(int x, int y, String type){
         switch (type){
             case BISHOP: return new Bishop(x,y);
@@ -100,11 +111,59 @@ public class SoltrChessModel extends Observable {
         }
     }
 
-    //method boolean to check if there is a piece at destination x,y
+    /**
+     * Determine whether a piece can be moved to another location,
+     * capturing the figure at the location.
+     *
+     * @param pieceX
+     * @param pieceY
+     * @param toX
+     * @param toY
+     * @return
+     */
+    public boolean canMovePieceTo(int pieceX, int pieceY, int toX, int toY){
 
-    //method to tell if valid move for piece combining previous method and
-    //canMoveTo from figure.
+        BoardPiece currentPiece = board[pieceX][pieceY];
 
+        if (currentPiece.getName().equals(BLANK)){
+            return false;
+
+        }else{
+            return (piecePresent(toX,toY) && currentPiece.canMoveTo(toX,toY));
+        }
+    }
+
+    /**
+     * Check if there is a piece at x,y of the board.
+     *
+     * @param atX
+     * @param atY
+     * @return
+     */
+    private boolean piecePresent(int atX, int atY){
+        return !(board[atX][atY].getName().equals(BLANK));
+    }
+
+    /**
+     * Move a piece on the board.
+     *
+     * Precondition: VALID MOVE.
+     * Post Condition: Piece moved to new location replacing other piece.
+     *
+     * @param pieceX
+     * @param pieceY
+     * @param toX
+     * @param toY
+     */
+    public void movePieceTo(int pieceX, int pieceY, int toX, int toY){
+
+        BoardPiece piece = board[pieceX][pieceY];
+
+        board[toX][toY] = piece;
+
+        board[pieceX][pieceY] = new Blank(pieceX,pieceY);
+
+    }
 
     public BoardPiece[][] getBoard() {
         return board;
