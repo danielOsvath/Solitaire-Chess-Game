@@ -27,7 +27,7 @@ public class SoltrChess {
      */
     public static void main( String[] args ) {
         UIMode mode = UIMode.huh;
-        System.out.println( "Welcome to Solitaire Chess!" );
+        System.out.println( "Welcome to Solitaire Chess!\n" );
         String fileName = null;
         switch ( args.length ) {
             case 2:

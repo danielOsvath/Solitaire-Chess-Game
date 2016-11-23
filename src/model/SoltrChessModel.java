@@ -3,11 +3,11 @@
  */
 package model;
 
+import javafx.scene.layout.Pane;
 import model.pieces.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Scanner;
 
@@ -25,13 +25,13 @@ public class SoltrChessModel extends Observable {
      */
     public static final int DIMENSION = 4;
 
-    public static final String BLANK = "-";
-    public static final String BISHOP = "B";
-    public static final String KING = "K";
-    public static final String KNIGHT = "N";
-    public static final String PAWN = "P";
-    public static final String QUEEN = "Q";
-    public static final String ROOK = "R";
+    private static final String BLANK = "-";
+    private static final String BISHOP = "B";
+    private static final String KING = "K";
+    private static final String KNIGHT = "N";
+    private static final String PAWN = "P";
+    private static final String QUEEN = "Q";
+    private static final String ROOK = "R";
 
     /**
      * The Chess Solitaire Board
@@ -125,7 +125,8 @@ public class SoltrChessModel extends Observable {
 
         BoardPiece currentPiece = board[pieceX][pieceY];
 
-        if (currentPiece.getName().equals(BLANK)){
+        if (currentPiece.getName().equals(BLANK) ||
+                ((pieceX == toX) && (pieceY == toY)) ){
             return false;
 
         }else{
@@ -141,7 +142,7 @@ public class SoltrChessModel extends Observable {
      * @return
      */
     private boolean piecePresent(int atX, int atY){
-        return !(board[atX][atY].getName().equals(BLANK));
+        return !(board[atX][atY].getAbbr().equals(BLANK));
     }
 
     /**
@@ -169,6 +170,21 @@ public class SoltrChessModel extends Observable {
         notifyObservers();
     }
 
+    //temporary isGoal func -> move to configuration later.
+    public boolean isGoal(){
+
+        int countPiece = 0;
+
+        for (BoardPiece[] row : board){
+            for (BoardPiece element : row){
+                if (!element.getAbbr().equals(BLANK)){
+                    countPiece++;
+                }
+            }
+        }
+
+        return (countPiece == 1);
+    }
     /**
      *
      * @return

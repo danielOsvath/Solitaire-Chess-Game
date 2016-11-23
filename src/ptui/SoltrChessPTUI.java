@@ -6,6 +6,7 @@ package ptui;
 import model.*;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Scanner;
 
 /**
  * Part of SoltrChess project.
@@ -18,8 +19,15 @@ import java.util.Observer;
 public class SoltrChessPTUI implements Observer {
 
     private SoltrChessModel model;
+    private String originalfile;
 
+    /**
+     *
+     * @param fileName
+     */
     public SoltrChessPTUI( String fileName ) {
+        originalfile = fileName;
+        System.out.println("Game File: " + fileName);
         model = new SoltrChessModel(fileName);
         initializeView();
     }
@@ -47,9 +55,158 @@ public class SoltrChessPTUI implements Observer {
 
     // CONTROLLER
 
+    /**
+     *
+     */
     public void run() {
+        Scanner in = new Scanner(System.in);
+
+        while (true){
+
+            System.out.print("[move,new,restart,hint,solve,quit]> ");
+            String line = in.nextLine().toLowerCase();
+
+            switch (line){
+
+                case "move":
+                    if(model.isGoal()){
+                        System.out.println("You won! No moves left.");
+                        break;
+                    }
+                    promptForMove(in);
+                    break;
+
+                case "new":
+
+                    System.out.print("game file name: ");
+                    String newFile = in.nextLine();
+                    originalfile = newFile;
+                    model = new SoltrChessModel(newFile);
+                    displayBoard();
+                    checkGoal();
+                    break;
+
+                case "restart":
+
+                    System.out.println("Restarting game. ");
+                    model = new SoltrChessModel(originalfile);
+                    displayBoard();
+                    break;
+
+                case "hint":
+
+                    System.out.println("HINT");
+                    break;
+
+                case "solve":
+
+                    System.out.println("SOLVE");
+                    break;
+
+                case "quit":
+                    System.out.println("Thank you for playing.");
+                    System.exit(1);
+                default: break;
+            }
+
+        }
     }
-    //make sure to check that entered coordinates are within bounds
+
+    /**
+     *
+     * @param in
+     */
+    private void promptForMove(Scanner in){
+
+        int fromX = promptForSourceX(in);
+        int fromY = promptForSourceY(in);
+
+        int toX = promptForDestX(in);
+        int toY = promptForDestY(in);
+
+
+        if(model.canMovePieceTo(fromX,fromY,toX,toY)) {
+            model.movePieceTo(fromX,fromY,toX,toY);
+            checkGoal();
+        }else {
+            System.out.println("\nInvalid move\n");
+            displayBoard();
+        }
+
+    }
+
+    private void checkGoal(){
+        if(model.isGoal()) System.out.println("You won. Congratulations!");
+    }
+
+    /**
+     *
+     * @param in
+     * @return
+     */
+    private int promptForSourceX(Scanner in){
+        System.out.print("Source Row? ");
+        return promptForValidInt(in);
+    }
+
+    /**
+     *
+     * @param in
+     * @return
+     */
+    private int promptForSourceY(Scanner in){
+        System.out.print("Source Col? ");
+        return promptForValidInt(in);
+    }
+
+    /**
+     *
+     * @param in
+     * @return
+     */
+    private int promptForDestX(Scanner in){
+        System.out.print("Destination Row? ");
+        return promptForValidInt(in);
+    }
+
+    /**
+     *
+     * @param in
+     * @return
+     */
+    private int promptForDestY(Scanner in){
+        System.out.print("Destination Col? ");
+        return promptForValidInt(in);
+    }
+
+    /**
+     * Prompts until user enters a valid integer between 0 and DIM-1.
+     *
+     * @param in input Scanner
+     * @return valid integer within bounds of board.
+     */
+    private int promptForValidInt(Scanner in){
+        while (true){
+            String x = in.nextLine();
+
+            try{
+                int integer = Integer.parseInt(x);
+
+                if(integer >= SoltrChessModel.DIMENSION){
+                    System.out.print("Please enter an integer from 0 - "
+                            + Integer.toString(SoltrChessModel.DIMENSION-1)
+                            + ": ");
+                }else{
+                    return integer;
+                }
+
+            }catch (NumberFormatException e){
+                System.out.print("Please enter a valid integer: ");
+            }
+
+        }
+    }
+
     //test making moves with figures, playing some puzzles.
 
     // VIEW
