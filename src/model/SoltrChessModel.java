@@ -25,7 +25,7 @@ public class SoltrChessModel extends Observable {
      */
     public static final int DIMENSION = 4;
 
-    private static final String BLANK = "-";
+    public static final String BLANK = "-";
     private static final String BISHOP = "B";
     private static final String KING = "K";
     private static final String KNIGHT = "N";

@@ -5,6 +5,9 @@ package backtracking;
  */
 
 
+import model.BoardPiece;
+import model.SoltrChessModel;
+
 import java.util.Collection;
 
 /**
@@ -16,18 +19,51 @@ import java.util.Collection;
  */
 public class SoltrChessConfig implements Configuration{
 
+    private BoardPiece[][] config;
+
+    /**
+     *
+     * @param config
+     */
+    public SoltrChessConfig(BoardPiece[][] config){
+        this.config = config;
+    }
+
+    /**
+     *
+     * @return
+     */
     @Override
     public Collection<Configuration> getSuccessors() {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean isValid() {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean isGoal() {
-        return false;
+
+        int countPiece = 0;
+
+        for (BoardPiece[] row : config){
+            for (BoardPiece element : row){
+                if (!element.getAbbr().equals(SoltrChessModel.BLANK)){
+                    countPiece++;
+                }
+            }
+        }
+
+        return (countPiece == 1);
     }
 }

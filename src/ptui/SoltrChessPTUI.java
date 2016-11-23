@@ -3,6 +3,7 @@
  */
 package ptui;
 
+import backtracking.Backtracker;
 import model.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -43,7 +44,7 @@ public class SoltrChessPTUI implements Observer {
     /**
      *
      */
-    public void displayBoard() {
+    private void displayBoard() {
         for(BoardPiece[] row : model.getBoard()){
             for(BoardPiece element : row){
                 System.out.print(element.getAbbr() + " ");
@@ -80,8 +81,8 @@ public class SoltrChessPTUI implements Observer {
                     System.out.print("game file name: ");
                     String newFile = in.nextLine();
                     originalfile = newFile;
-                    model = new SoltrChessModel(newFile);
-                    displayBoard();
+                    this.model = new SoltrChessModel(newFile);
+                    initializeView();
                     checkGoal();
                     break;
 
@@ -126,7 +127,6 @@ public class SoltrChessPTUI implements Observer {
 
         if(model.canMovePieceTo(fromX,fromY,toX,toY)) {
             model.movePieceTo(fromX,fromY,toX,toY);
-            displayBoard();
             checkGoal();
         }else {
             System.out.println("\nInvalid move\n");
