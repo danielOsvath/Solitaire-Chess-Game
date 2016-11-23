@@ -159,6 +159,8 @@ public class SoltrChessModel extends Observable {
 
         BoardPiece piece = board[pieceX][pieceY];
 
+        piece.moveTo(toX,toY);
+
         board[toX][toY] = piece;
 
         board[pieceX][pieceY] = new Blank(pieceX,pieceY);
