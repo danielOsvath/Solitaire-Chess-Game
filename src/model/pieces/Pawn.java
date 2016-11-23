@@ -5,7 +5,7 @@ import model.BoardPiece;
 /**
  * Class for Pawn chess piece
  */
-public class Pawn implements BoardPiece {
+public class Pawn extends BoardPiece {
 
     private int x;
     private int y;

@@ -11,7 +11,7 @@ import model.BoardPiece;
  * @author Nathan Cassata
  * @author Daniel Osvath Londono
  * */
-public class Blank implements BoardPiece {
+public class Blank extends BoardPiece {
 
     private int x;
     private int y;
@@ -58,12 +58,10 @@ public class Blank implements BoardPiece {
         return false;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
+
     public String toString() {
         return this.name + " at (" + x + ", " + y + ")";
     }
+
 }

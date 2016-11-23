@@ -9,10 +9,8 @@ import model.BoardPiece;
  * @author Daniel Osvath Londono
  */
 
-public class King implements BoardPiece {
+public class King extends BoardPiece {
 
-    private int x;
-    private int y;
     private String name = "King";
     private String abbr = "K";
 

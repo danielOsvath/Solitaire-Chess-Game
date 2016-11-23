@@ -93,6 +93,12 @@ public class SoltrChessModel extends Observable {
         }
     }
 
+    //method boolean to check if there is a piece at destination x,y
+
+    //method to tell if valid move for piece combining previous method and
+    //canMoveTo from figure.
+
+
     public BoardPiece[][] getBoard() {
         return board;
     }

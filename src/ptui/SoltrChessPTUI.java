@@ -49,8 +49,33 @@ public class SoltrChessPTUI implements Observer {
 
     public void run() {
     }
+    //make sure to check that entered coordinates are within bounds
 
     // VIEW
+
+    private String typeOfMove(int fromX, int fromY, int toX, int toY) {
+        //NOTE: X and Y coordinates are reversed due to 2D array!
+
+        int xChange = Math.abs(fromX - toX);
+        int yChange = Math.abs(fromY - toY);
+
+        if(fromX == toX){
+            return "HORIZONTAL";
+
+        } else if(fromY == toY){
+            return "VERTICAL";
+
+        }else if(yChange == xChange){
+            return "DIAGONAL";
+
+        }else if( ((yChange == 1) && (xChange == 2)) ||
+                        ((yChange == 2) && (xChange == 1)) ){
+            return "LSHAPE";
+
+        }else{
+            return "INVALID";
+        }
+    }
 
     @Override
     public void update(Observable observable, Object o) {
