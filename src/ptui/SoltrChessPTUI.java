@@ -50,6 +50,7 @@ public class SoltrChessPTUI implements Observer {
     public void run() {
     }
     //make sure to check that entered coordinates are within bounds
+    //test making moves with figures, playing some puzzles.
 
     // VIEW
 

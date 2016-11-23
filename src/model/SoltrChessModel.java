@@ -165,8 +165,14 @@ public class SoltrChessModel extends Observable {
 
         board[pieceX][pieceY] = new Blank(pieceX,pieceY);
 
+        setChanged();
+        notifyObservers();
     }
 
+    /**
+     *
+     * @return
+     */
     public BoardPiece[][] getBoard() {
         return board;
     }
