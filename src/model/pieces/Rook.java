@@ -1,4 +1,7 @@
-package model;
+package model.pieces;
+
+import model.BoardPiece;
+import model.SoltrChessModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +45,7 @@ public class Rook implements BoardPiece {
         int[] desiredLoc = {x,y};
 
         //Finds available moves
-        for(int i=0;i<SoltrChessModel.DIMENSION;i++) {
+        for(int i = 0; i< SoltrChessModel.DIMENSION; i++) {
             for(int j=0;j<SoltrChessModel.DIMENSION;j++) {
                 if((i==currY&&j!=currX)||(j==currX&&i!=currY)) {
                     int[] coord = new int [2];

@@ -1,28 +1,27 @@
-/*
- * Bishop.java
- */
+package model.pieces;
 
-package model;
+import model.BoardPiece;
 
 /**
- * Class for Bishop chess piece
+ * Class for King chess piece
  *
  * @author Nathan Cassata
  * @author Daniel Osvath Londono
  */
-public class Bishop implements BoardPiece {
+
+public class King implements BoardPiece {
 
     private int x;
     private int y;
-    private String name = "Bishop";
-    private String abbr = "B";
+    private String name = "King";
+    private String abbr = "K";
 
     /**
      *
      * @param x
      * @param y
      */
-    public Bishop(int x, int y)
+    public King(int x, int y)
     {
         this.x = x;
         this.y = y;

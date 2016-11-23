@@ -1,4 +1,7 @@
-package model;
+package model.pieces;
+
+import model.BoardPiece;
+
 /**
  * Class for Pawn chess piece
  */

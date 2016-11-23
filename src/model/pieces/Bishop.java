@@ -1,27 +1,30 @@
 /*
- * Blank.java
+ * Bishop.java
  */
-package model;
+
+package model.pieces;
+
+import model.BoardPiece;
 
 /**
- * Class for Blank spot
+ * Class for Bishop chess piece
  *
  * @author Nathan Cassata
  * @author Daniel Osvath Londono
- * */
-public class Blank implements BoardPiece {
+ */
+public class Bishop implements BoardPiece {
 
     private int x;
     private int y;
-    private String name = "Blank";
-    private String abbr = "-";
+    private String name = "Bishop";
+    private String abbr = "B";
 
     /**
      *
      * @param x
      * @param y
      */
-    public Blank(int x, int y)
+    public Bishop(int x, int y)
     {
         this.x = x;
         this.y = y;
