@@ -10,6 +10,8 @@ import model.SoltrChessModel;
 
 import java.util.Collection;
 
+import static com.sun.tools.doclint.Entity.copy;
+
 /**
  * The configuration class for backtracking.
  *
@@ -23,10 +25,18 @@ public class SoltrChessConfig implements Configuration{
 
     /**
      *
-     * @param config
+     * @param copy
      */
-    public SoltrChessConfig(BoardPiece[][] config){
-        this.config = config;
+    public SoltrChessConfig(SoltrChessConfig copy){
+
+        config = new BoardPiece[4][4];
+
+        //Copy config arrray
+        for(int i = 0; i < copy.config.length; i++){
+            System.arraycopy(copy.config[i], 0, this.config[i],
+                    0, copy.config[i].length);
+        }
+
     }
 
     /**
@@ -35,6 +45,8 @@ public class SoltrChessConfig implements Configuration{
      */
     @Override
     public Collection<Configuration> getSuccessors() {
+
+
         return null;
     }
 
