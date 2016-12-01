@@ -108,6 +108,7 @@ public class SoltrChessGUI extends Application implements Observer {
     @Override
     public void update(Observable observable, Object o) {
         System.out.println("Update called");
+        System.out.println("");
     }
 
     /**
