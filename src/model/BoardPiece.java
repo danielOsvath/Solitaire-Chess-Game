@@ -28,6 +28,9 @@ public class BoardPiece {
     /* Abbreviation of the figure */
     public String abbr;
 
+    /* If piece is selected for GUI */
+    public boolean selected = false;
+
     /**
      * Gets the name of the chess piece
      * @return chess piece name
