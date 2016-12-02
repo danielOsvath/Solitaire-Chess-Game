@@ -14,9 +14,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.event.*;
 import model.BoardPiece;
 import model.SoltrChessModel;
 
@@ -34,6 +36,12 @@ public class SoltrChessGUI extends Application implements Observer {
     private String filename;
     private BorderPane borderPane;
     private GridPane grid;
+    private Label messageField;
+
+    //Remembers which location is selected
+    private int currentSelectedCol = -1;
+    private int currentSelectedRow = -1;
+
 
 
     /**
@@ -47,11 +55,19 @@ public class SoltrChessGUI extends Application implements Observer {
 
         grid = new GridPane();
 
+        messageField = new Label();
+
         for(int i=0;i< SoltrChessModel.DIMENSION;i++)
         {
             for(int j=0;j<SoltrChessModel.DIMENSION;j++)
             {
                 Button button = new Button();
+                button.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        pieceSelected(button);
+                    }
+                });
                 button.setMinHeight(100);
                 button.setMinWidth(100);
                 grid.add(button,i,j);
@@ -59,8 +75,9 @@ public class SoltrChessGUI extends Application implements Observer {
         }
 
         borderPane.setCenter(grid);
+        displayBoard();
 
-        updateBoard();
+        borderPane.setTop(messageField);
 
         Scene scene = new Scene(borderPane);
         stage.setTitle("Solitaire Chess");
@@ -68,7 +85,39 @@ public class SoltrChessGUI extends Application implements Observer {
         stage.show();
     }
 
-    public void updateBoard(){
+    private void pieceSelected(Button button)
+    {
+        int col = grid.getColumnIndex(button);
+        int row = grid.getRowIndex(button);
+
+        BoardPiece[][] boardPieces = model.getBoard();
+        BoardPiece pieceSelectedObj = boardPieces[row][col];
+
+        messageField.setText(pieceSelectedObj.getName() + " Selected");
+        System.out.println("COL: " + col + " ROW: " + row + " Selected: " + pieceSelectedObj.getName());
+
+        if(currentSelectedCol == -1 &&currentSelectedRow == -1) {
+
+            //Updates selected position
+            currentSelectedCol = col;
+            currentSelectedRow = row;
+
+        } else {
+            if(model.canMovePieceTo(currentSelectedCol,currentSelectedRow,row,col)) {
+                model.movePieceTo(currentSelectedCol,currentSelectedRow,row,col);
+
+
+                if(model.isGoal()) {System.out.println("You won. Congratulations!");}
+            }else {
+                messageField.setText("Invalid Move!");
+                currentSelectedRow = -1;
+                currentSelectedCol = -1;
+                displayBoard();
+            }
+        }
+    }
+
+    public void displayBoard(){
 
         BoardPiece[][] boardPieces = model.getBoard();
 
@@ -92,12 +141,12 @@ public class SoltrChessGUI extends Application implements Observer {
             }
         }
 
-        for(BoardPiece[] row : model.getBoard()){
-            for(BoardPiece element : row){
-                System.out.print(element.getAbbr() + " ");
-            }
-            System.out.print("\n");
-        }
+//        for(BoardPiece[] row : model.getBoard()){
+//            for(BoardPiece element : row){
+//                System.out.print(element.getAbbr() + " ");
+//            }
+//            System.out.print("\n");
+//        }
     }
 
     /**
@@ -107,6 +156,7 @@ public class SoltrChessGUI extends Application implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
+        displayBoard();
         System.out.println("Update called");
         System.out.println("");
     }
