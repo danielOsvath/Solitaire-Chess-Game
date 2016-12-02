@@ -8,9 +8,10 @@ package backtracking;
 import model.BoardPiece;
 import model.SoltrChessModel;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.sun.tools.doclint.Entity.copy;
+import static model.SoltrChessModel.*;
 
 /**
  * The configuration class for backtracking.
@@ -29,7 +30,7 @@ public class SoltrChessConfig implements Configuration{
      */
     public SoltrChessConfig(SoltrChessConfig copy){
 
-        config = new BoardPiece[4][4];
+        config = new BoardPiece[DIMENSION][DIMENSION];
 
         //Copy config arrray
         for(int i = 0; i < copy.config.length; i++){
@@ -46,6 +47,18 @@ public class SoltrChessConfig implements Configuration{
     @Override
     public Collection<Configuration> getSuccessors() {
 
+        Collection<Configuration> successors = new ArrayList<>();
+
+        for (BoardPiece[] row : config){
+            for (BoardPiece piece : row){
+                if(!piece.getName().equals(BLANK)){
+                    //for possibleMoves:
+                    //SoltrChessConfig successor = new SoltrChessConfig(this);
+                    //successor.makeMove
+                    //successors.add(successor)
+                }
+            }
+        }
 
         return null;
     }
@@ -56,7 +69,42 @@ public class SoltrChessConfig implements Configuration{
      */
     @Override
     public boolean isValid() {
-        return false;
+        return true;
+    }
+
+    /**
+     * Returns an array of possible move coordinates (x,y) array.
+     *
+     * @param mypiece piece to move
+     *
+     * @return array of possible moves
+     */
+    private ArrayList<int[]> getPossibleMoves(BoardPiece mypiece){
+
+        ArrayList<int[]> moves = new ArrayList<>();
+
+        for (int toX = 0; toX < DIMENSION; toX++) {
+
+            for (int toY = 0; toY < DIMENSION; toY++) {
+
+                BoardPiece current = config[toX][toY];
+
+                int myX = mypiece.x;
+                int myY = mypiece.y;
+
+                if ( !(current.getName().equals(BLANK)) &&
+                        !(myX == toX && myY == toY) ) {
+
+                    if(mypiece.canMoveTo(toX,toY)){
+
+                        int[] coord = {toX,toY};
+                        moves.add(coord);
+                    }
+                }
+            }
+        }
+
+        return moves;
     }
 
     /**
@@ -70,7 +118,7 @@ public class SoltrChessConfig implements Configuration{
 
         for (BoardPiece[] row : config){
             for (BoardPiece element : row){
-                if (!element.getAbbr().equals(SoltrChessModel.BLANK)){
+                if (!element.getAbbr().equals(BLANK)){
                     countPiece++;
                 }
             }
