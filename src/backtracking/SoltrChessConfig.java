@@ -7,6 +7,7 @@ package backtracking;
 
 import model.BoardPiece;
 import model.SoltrChessModel;
+import model.pieces.Blank;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,12 +51,20 @@ public class SoltrChessConfig implements Configuration{
         Collection<Configuration> successors = new ArrayList<>();
 
         for (BoardPiece[] row : config){
+
             for (BoardPiece piece : row){
+
                 if(!piece.getName().equals(BLANK)){
-                    //for possibleMoves:
-                    //SoltrChessConfig successor = new SoltrChessConfig(this);
-                    //successor.makeMove
-                    //successors.add(successor)
+                    for ( int[] coordinates: getPossibleMoves(piece)){
+
+                        SoltrChessConfig successor = new SoltrChessConfig(this);
+
+                        successor.makeMove(piece.x,piece.y,coordinates[0],coordinates[1]);
+
+                        successors.add(successor);
+
+                    }
+
                 }
             }
         }
@@ -73,10 +82,28 @@ public class SoltrChessConfig implements Configuration{
     }
 
     /**
-     * Returns an array of possible move coordinates (x,y) array.
+     *
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     */
+    private void makeMove(int fromX, int fromY, int toX, int toY){
+
+        BoardPiece piece = config[fromX][fromY];
+
+        piece.moveTo(toX,toY);
+
+        config[toX][toY] = piece;
+
+        config[fromX][fromY] = new Blank(fromX,fromY);
+    }
+
+    /**
+     * Returns an array of possible move coordinates
+     * for a piece, as an (x,y) array.
      *
      * @param mypiece piece to move
-     *
      * @return array of possible moves
      */
     private ArrayList<int[]> getPossibleMoves(BoardPiece mypiece){
@@ -97,8 +124,8 @@ public class SoltrChessConfig implements Configuration{
 
                     if(mypiece.canMoveTo(toX,toY)){
 
-                        int[] coord = {toX,toY};
-                        moves.add(coord);
+                        int[] coordinate = {toX,toY};
+                        moves.add(coordinate);
                     }
                 }
             }
