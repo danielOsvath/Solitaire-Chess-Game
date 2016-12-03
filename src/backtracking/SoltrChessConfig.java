@@ -137,7 +137,8 @@ public class SoltrChessConfig implements Configuration{
                 int myY = mypiece.y;
 
                 if ( !(current.getAbbr().equals(BLANK)) &&
-                        !(myX == toX && myY == toY) ) {
+                        !(myX == toX && myY == toY) &&
+                        !(figureInPath(config, myX, myY, toX, toY))) {
 
                     if(mypiece.canMoveTo(toX,toY)){
 

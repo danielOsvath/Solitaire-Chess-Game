@@ -115,41 +115,18 @@ public class SoltrChessModel extends Observable {
     }
 
     /**
-     * Determine whether a piece can be moved to another location,
-     * capturing the figure at the location.
      *
-     * @param pieceX
-     * @param pieceY
+     * @param fromX
+     * @param fromY
      * @param toX
      * @param toY
      * @return
      */
-    public boolean canMovePieceTo(int pieceX, int pieceY, int toX, int toY){
+    public boolean canMovePieceTo(int fromX, int fromY, int toX, int toY){
 
-        BoardPiece currentPiece = board[pieceX][pieceY];
+        return ValidateMove.canMovePieceTo(this.board,fromX,fromY,toX,toY);
 
-        if (currentPiece.getName().equals(BLANK) ||
-                ((pieceX == toX) && (pieceY == toY)) ){
-            return false;
-
-        }else{
-            return (piecePresent(toX,toY) && currentPiece.canMoveTo(toX,toY)
-            && !(figureInPath(pieceX,pieceY,toX,toY)) );
-
-        }
     }
-
-    /**
-     * Check if there is a piece at x,y of the board.
-     *
-     * @param atX
-     * @param atY
-     * @return
-     */
-    private boolean piecePresent(int atX, int atY){
-        return !(board[atX][atY].getAbbr().equals(BLANK));
-    }
-
     /**
      * Move a piece on the board.
      *
@@ -227,169 +204,5 @@ public class SoltrChessModel extends Observable {
      */
     public BoardPiece[][] getBoard() {
         return board;
-    }
-
-    /**
-     * Pre-condition: Valid Move for figure in direction
-     * and piece present at destination.
-     *
-     * NO JUMPING OVER FIGURES!
-     *
-     * Determine whether there is a figure between two coordinates
-     * (except for knight)
-     *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
-     * @return
-     */
-    private boolean figureInPath(int fromX, int fromY, int toX, int toY){
-
-        if(board[fromX][fromY].getAbbr().equals(KNIGHT)){
-            return false;
-        }else{
-            String typeOfMove = board[fromX][fromY].typeOfMove(fromX,fromY,toX,toY);
-
-            switch(typeOfMove){ //is there figure?
-                case "DIAGONAL": return checkDiagPath(fromX,fromY,toX,toY);
-                case "HORIZONTAL": return checkHorizontalPath(fromX,fromY,toX,toY);
-                case "VERTICAL" : return checkVerticalPath(fromX,fromY,toX,toY);
-            }
-            return true;
-        }
-    }
-
-    /**
-     * Determine whether there is a piece between two coordinates vertically.
-     *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
-     * @return
-     */
-    private boolean checkVerticalPath(int fromX, int fromY, int toX, int toY) {
-
-        int smaller;
-        int greater;
-
-        if (fromX < toX) {
-            smaller = fromX;
-            greater = toX;
-        } else {
-            smaller = toX;
-            greater = fromX;
-
-        }
-
-        for (int cur = smaller + 1; cur < greater; cur++) {
-            if (piecePresent(cur, fromY)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine whether there is a piece between two coordinates horizontally.
-     *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
-     * @return
-     */
-    private boolean checkHorizontalPath(int fromX, int fromY, int toX, int toY){
-
-        int smaller;
-        int greater;
-
-        if(fromY < toY){
-            smaller = fromY;
-            greater = toY;
-        }else {
-            smaller = toY;
-            greater = fromY;
-
-        }
-
-        for (int cur = smaller + 1; cur < greater; cur++){
-            if (piecePresent(fromX,cur)){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine whether there is a figure in the path between the coordinates.
-     *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
-     * @return true if there is a piece, else false.
-     */
-    private boolean checkDiagPath(int fromX, int fromY, int toX, int toY){
-
-        if( (toX < fromX)&& (toY < fromY)){
-
-            int curX = fromX - 1;
-            int curY = fromY - 1;
-
-            while (toX < curX && toY < curY){
-                if (piecePresent(curX,curY)){
-                    return true;
-                }
-                curX--;
-                curY--;
-            }
-
-        }else if(( toX < fromX) && (toY > fromY) ) {
-
-            int curX = fromX - 1;
-            int curY = fromY + 1;
-
-            while (toX < curX && toY > curY){
-                if (piecePresent(curX,curY)){
-                    return true;
-                }
-                curX--;
-                curY++;
-            }
-
-        }else if( (toX > fromX) && (toY < fromY) ){
-
-            int curX = fromX + 1;
-            int curY = fromY - 1;
-
-            while (toX > curX && toY < curY){
-                if (piecePresent(curX,curY)){
-                    return true;
-                }
-                curX++;
-                curY--;
-            }
-
-        }else{
-
-            int curX = fromX + 1;
-            int curY = fromY + 1;
-
-            while (toX > curX && toY > curY){
-                if (piecePresent(curX,curY)){
-                    return true;
-                }
-                curX++;
-                curY++;
-            }
-
-        }
-
-        return false;
-
     }
 }
