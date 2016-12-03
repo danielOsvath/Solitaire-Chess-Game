@@ -11,12 +11,14 @@ package gui;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.event.*;
 import model.BoardPiece;
@@ -37,10 +39,14 @@ public class SoltrChessGUI extends Application implements Observer {
     private BorderPane borderPane;
     private GridPane grid;
     private Label messageField;
+    private Button newGameBtn;
+    private Button restartBtn;
+    private Button hintBtn;
+    private Button solveBtn;
 
 
     /**
-     * Construct the layout for the game. 
+     * Construct the layout for the game.
      *
      * @param stage container (window) in which to render the UI
      */
@@ -50,8 +56,54 @@ public class SoltrChessGUI extends Application implements Observer {
 
         grid = new GridPane();
 
+        generateGrid();
+
         messageField = new Label("Select a Piece");
 
+
+        borderPane.setCenter(grid);
+        displayBoard();
+
+        //TOP Message Field
+        borderPane.setTop(messageField);
+
+        //Bottom Box
+        HBox bottomBox = new HBox();
+        bottomBox.setAlignment(Pos.CENTER);
+        newGameBtn = new Button("New Game");
+        restartBtn = new Button("Restart");
+        restartBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                model = new SoltrChessModel(filename);
+//                generateGrid();
+                displayBoard();
+            }
+        });
+        hintBtn = new Button("Hint");
+        solveBtn = new Button("Solve");
+        bottomBox.getChildren().addAll(newGameBtn, restartBtn, hintBtn, solveBtn);
+        borderPane.setBottom(bottomBox);
+
+        Scene scene = new Scene(borderPane);
+        stage.setTitle("Solitaire Chess");
+        stage.setScene(scene);
+        stage.show();
+
+        for(BoardPiece[] row : model.getBoard()){
+            for(BoardPiece element : row){
+                System.out.print(element.getAbbr() + " ");
+            }
+            System.out.print("\n");
+        }
+    }
+
+    /**
+     * Generates the grid.
+     */
+    private void generateGrid()
+    {
+        //Center GridView
         for(int i=0;i< SoltrChessModel.DIMENSION;i++)
         {
             for(int j=0;j<SoltrChessModel.DIMENSION;j++)
@@ -69,22 +121,6 @@ public class SoltrChessGUI extends Application implements Observer {
             }
         }
 
-        borderPane.setCenter(grid);
-        displayBoard();
-
-        borderPane.setTop(messageField);
-
-        Scene scene = new Scene(borderPane);
-        stage.setTitle("Solitaire Chess");
-        stage.setScene(scene);
-        stage.show();
-
-        for(BoardPiece[] row : model.getBoard()){
-            for(BoardPiece element : row){
-                System.out.print(element.getAbbr() + " ");
-            }
-            System.out.print("\n");
-        }
     }
 
     private void pieceSelected(Button button)
@@ -116,17 +152,16 @@ public class SoltrChessGUI extends Application implements Observer {
         pieceCurrentlySelected.selected = true;
 
         messageField.setText(pieceCurrentlySelected.getName() + " Selected");
-//        System.out.println("(" + x + " , " + y + ") Selected: " + pieceCurrentlySelected.getName());
+        System.out.println("(" + x + " , " + y + ") Selected: " + pieceCurrentlySelected.getName());
 
         if(!(pieceAlreadySelected==null)) {
-//            System.out.println("This piece currently selected: " + pieceAlreadySelected.getName());
-//
-//            System.out.println("(" +pieceAlreadySelected.x + ", " + pieceAlreadySelected.y + ") "
-//                    + "trying to move to: (" + x + " , " + y + ")");
+            System.out.println("This piece currently selected: " + pieceAlreadySelected.getName());
 
-            if(model.canMovePieceTo(pieceAlreadySelected.x, pieceAlreadySelected.y, x,y))
-            {
-//                System.out.println("Can Move to");
+            System.out.println("(" +pieceAlreadySelected.x + ", " + pieceAlreadySelected.y + ") "
+                    + "trying to move to: (" + x + " , " + y + ")");
+
+            if(model.canMovePieceTo(pieceAlreadySelected.x, pieceAlreadySelected.y, x,y)) {
+                System.out.println("Can Move to");
                 model.movePieceTo(pieceAlreadySelected.x, pieceAlreadySelected.y, x,y);
                 pieceAlreadySelected.selected = false;
                 messageField.setText("Select a Piece");
@@ -134,6 +169,11 @@ public class SoltrChessGUI extends Application implements Observer {
                 {
                     messageField.setText("You won! No moves left.");
                 }
+            } else { //If piece cannot move to
+
+                pieceAlreadySelected.selected = false;
+                pieceCurrentlySelected.selected = false;
+                messageField.setText("Invalid Move.");
             }
         } else {
             BoardPiece pieceSelectedObj = boardPieces[x][y];

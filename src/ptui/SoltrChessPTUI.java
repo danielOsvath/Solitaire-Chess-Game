@@ -54,7 +54,6 @@ public class SoltrChessPTUI implements Observer {
     }
 
     // CONTROLLER
-
     /**
      *
      */
