@@ -57,12 +57,11 @@ public class Backtracker {
     public List< Configuration > solveWithPath( Configuration current ) {
 
         List<Configuration> steps = new LinkedList<>();
+        steps.add(current);
 
         while (current != null) {
 
             if (current.isGoal()) {
-
-                steps.add(current);
 
                 return steps;
 

@@ -135,7 +135,7 @@ public class SoltrChessConfig implements Configuration{
                 int myX = mypiece.x;
                 int myY = mypiece.y;
 
-                if (ValidateMove.canMovePieceTo(config,myX,myY,toX,toY)){
+                if (ValidateMove.canMovePieceTo(this.config,myX,myY,toX,toY)){
                         int[] coordinate = {toX,toY};
                         moves.add(coordinate);
                 }

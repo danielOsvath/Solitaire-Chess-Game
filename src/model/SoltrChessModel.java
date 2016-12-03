@@ -176,25 +176,27 @@ public class SoltrChessModel extends Observable {
 
         SoltrChessConfig config = new SoltrChessConfig(board);
 
-        Optional<Configuration> steps = solver.solve(config);
+        List<Configuration> steps = solver.solveWithPath(config);
 
-        if(steps.isPresent()){
-            board = steps.get().getBoard();
+
+        for (int curStep = 1; curStep < steps.size(); curStep++){
+
+            board = steps.get(curStep).getBoard();
+
+            setChanged();
+            notifyObservers();
+
+            try{
+                TimeUnit.SECONDS.sleep(1);
+            }catch (InterruptedException e){
+
+            }
+
         }
-//        for (Configuration current : steps){
-//
-//            board = current.getBoard();
-//
-        setChanged();
-        notifyObservers();
-//
-//            try{
-//                TimeUnit.SECONDS.sleep(3);
-//            }catch (InterruptedException e){
-//
-//            }
-//
-//        }
+
+    }
+
+    public void hint(){
 
     }
 
