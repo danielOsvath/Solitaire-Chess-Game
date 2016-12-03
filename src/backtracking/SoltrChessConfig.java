@@ -7,6 +7,7 @@ package backtracking;
 
 import model.BoardPiece;
 import model.SoltrChessModel;
+import model.ValidateMove;
 import model.pieces.Blank;
 
 import java.util.ArrayList;
@@ -131,20 +132,12 @@ public class SoltrChessConfig implements Configuration{
 
             for (int toY = 0; toY < DIMENSION; toY++) {
 
-                BoardPiece current = config[toX][toY];
-
                 int myX = mypiece.x;
                 int myY = mypiece.y;
 
-                if ( !(current.getAbbr().equals(BLANK)) &&
-                        !(myX == toX && myY == toY) &&
-                        !(figureInPath(config, myX, myY, toX, toY))) {
-
-                    if(mypiece.canMoveTo(toX,toY)){
-
+                if (ValidateMove.canMovePieceTo(config,myX,myY,toX,toY)){
                         int[] coordinate = {toX,toY};
                         moves.add(coordinate);
-                    }
                 }
             }
         }

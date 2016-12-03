@@ -15,7 +15,32 @@ import static model.SoltrChessModel.*;
  */
 public class ValidateMove {
 
+    /**
+     * Determine whether a piece can be moved to another location,
+     * capturing the figure at the location.
+     *
+     * @param pieceX
+     * @param pieceY
+     * @param toX
+     * @param toY
+     * @return
+     */
+    public static boolean canMovePieceTo(BoardPiece[][] myboard, int pieceX,
+                                         int pieceY, int toX, int toY){
 
+        BoardPiece currentPiece = myboard[pieceX][pieceY];
+
+        if (currentPiece.getName().equals(BLANK) ||
+                ((pieceX == toX) && (pieceY == toY)) ){
+            return false;
+
+        }else{
+            return (piecePresent(myboard,toX,toY) &&
+                    currentPiece.canMoveTo(toX,toY) &&
+                    !(figureInPath(myboard, pieceX, pieceY, toX, toY)) );
+
+        }
+    }
 
     /**
      * Pre-condition: Valid Move for figure in direction
@@ -189,33 +214,6 @@ public class ValidateMove {
 
         return false;
 
-    }
-
-    /**
-     * Determine whether a piece can be moved to another location,
-     * capturing the figure at the location.
-     *
-     * @param pieceX
-     * @param pieceY
-     * @param toX
-     * @param toY
-     * @return
-     */
-    public static boolean canMovePieceTo(BoardPiece[][] myboard, int pieceX,
-                                  int pieceY, int toX, int toY){
-
-        BoardPiece currentPiece = myboard[pieceX][pieceY];
-
-        if (currentPiece.getName().equals(BLANK) ||
-                ((pieceX == toX) && (pieceY == toY)) ){
-            return false;
-
-        }else{
-            return (piecePresent(myboard,toX,toY) &&
-                    currentPiece.canMoveTo(toX,toY) &&
-                    !(figureInPath(myboard, pieceX, pieceY, toX, toY)) );
-
-        }
     }
 
     /**
