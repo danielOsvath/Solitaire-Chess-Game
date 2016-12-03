@@ -40,6 +40,7 @@ public class SoltrChessModel extends Observable {
      * The Chess Solitaire Board
      */
     private BoardPiece[][] board;
+    private Backtracker solver;
 
     /**
      * Construct a SoltrChessModel
@@ -47,6 +48,7 @@ public class SoltrChessModel extends Observable {
     public SoltrChessModel(String filename) {
 
         board = new BoardPiece[DIMENSION][DIMENSION];
+        solver = new Backtracker();
 
         File file = new File(filename);
         try {
@@ -172,7 +174,6 @@ public class SoltrChessModel extends Observable {
      * Solve the puzzle, update the model along the way.
      */
     public void solve(){
-        Backtracker solver = new Backtracker();
 
         SoltrChessConfig config = new SoltrChessConfig(board);
 
@@ -197,6 +198,52 @@ public class SoltrChessModel extends Observable {
     }
 
     public void hint(){
+
+        SoltrChessConfig config = new SoltrChessConfig(board);
+
+        List<Configuration> steps = solver.solveWithPath(config);
+
+
+        // current not int list -> not winnable.
+
+        for (int i = 0; i < steps.size(); i++){
+
+            BoardPiece[][] curboard = steps.get(i).getBoard();
+
+            if (equalBoards(curboard,board)){
+                board = steps.get(i+1).getBoard();
+                break;
+            }
+
+        }
+
+        setChanged();
+        notifyObservers();
+
+    }
+
+
+    /**
+     *
+     * @param one
+     * @param two
+     * @return
+     */
+    private boolean equalBoards(BoardPiece[][] one, BoardPiece[][] two){
+
+        for (int row = 0; row < DIMENSION; row++){
+
+            for (int col = 0; col < DIMENSION; col++){
+
+                if ( !one[row][col].getAbbr().equals(two[row][col].getAbbr()) ){
+                    return false;
+                }
+
+            }
+
+        }
+
+        return true;
 
     }
 
