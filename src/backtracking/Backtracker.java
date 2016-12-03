@@ -30,6 +30,7 @@ public class Backtracker {
      * @return A solution config, or null if no solution
      */
     public Optional<Configuration> solve(Configuration config) {
+
         if (config.isGoal()) {
             return Optional.of(config);
         } else {
@@ -69,7 +70,7 @@ public class Backtracker {
 
                 Configuration step = aChildHasSolution(current);
 
-                if(aChildHasSolution(current) != null){
+                if(step != null){
                     steps.add(step);
                     current = step;
                 }else {

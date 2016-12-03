@@ -3,13 +3,16 @@
  */
 package model;
 
+import backtracking.Backtracker;
+import backtracking.Configuration;
+import backtracking.SoltrChessConfig;
 import javafx.scene.layout.Pane;
 import model.pieces.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Observable;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  *  Definition for the model of the Solitaire Chess Game.
@@ -26,12 +29,12 @@ public class SoltrChessModel extends Observable {
     public static final int DIMENSION = 4;
 
     public static final String BLANK = "-";
-    private static final String BISHOP = "B";
-    private static final String KING = "K";
-    private static final String KNIGHT = "N";
-    private static final String PAWN = "P";
-    private static final String QUEEN = "Q";
-    private static final String ROOK = "R";
+    public static final String BISHOP = "B";
+    public static final String KING = "K";
+    public static final String KNIGHT = "N";
+    public static final String PAWN = "P";
+    public static final String QUEEN = "Q";
+    public static final String ROOK = "R";
 
     /**
      * The Chess Solitaire Board
@@ -130,7 +133,9 @@ public class SoltrChessModel extends Observable {
             return false;
 
         }else{
-            return (piecePresent(toX,toY) && currentPiece.canMoveTo(toX,toY));
+            return (piecePresent(toX,toY) && currentPiece.canMoveTo(toX,toY)
+            && !(figureInPath(pieceX,pieceY,toX,toY)) );
+
         }
     }
 
@@ -185,11 +190,206 @@ public class SoltrChessModel extends Observable {
 
         return (countPiece == 1);
     }
+
+    /**
+     * Solve the puzzle, update the model along the way.
+     */
+    public void solve(){
+        Backtracker solver = new Backtracker();
+
+        SoltrChessConfig config = new SoltrChessConfig(board);
+
+        Optional<Configuration> steps = solver.solve(config);
+
+        if(steps.isPresent()){
+            board = steps.get().getBoard();
+        }
+//        for (Configuration current : steps){
+//
+//            board = current.getBoard();
+//
+        setChanged();
+        notifyObservers();
+//
+//            try{
+//                TimeUnit.SECONDS.sleep(3);
+//            }catch (InterruptedException e){
+//
+//            }
+//
+//        }
+
+    }
+
     /**
      *
      * @return
      */
     public BoardPiece[][] getBoard() {
         return board;
+    }
+
+    /**
+     * Pre-condition: Valid Move for figure in direction
+     * and piece present at destination.
+     *
+     * NO JUMPING OVER FIGURES!
+     *
+     * Determine whether there is a figure between two coordinates
+     * (except for knight)
+     *
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return
+     */
+    private boolean figureInPath(int fromX, int fromY, int toX, int toY){
+
+        if(board[fromX][fromY].getAbbr().equals(KNIGHT)){
+            return false;
+        }else{
+            String typeOfMove = board[fromX][fromY].typeOfMove(fromX,fromY,toX,toY);
+
+            switch(typeOfMove){ //is there figure?
+                case "DIAGONAL": return checkDiagPath(fromX,fromY,toX,toY);
+                case "HORIZONTAL": return checkHorizontalPath(fromX,fromY,toX,toY);
+                case "VERTICAL" : return checkVerticalPath(fromX,fromY,toX,toY);
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Determine whether there is a piece between two coordinates vertically.
+     *
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return
+     */
+    private boolean checkVerticalPath(int fromX, int fromY, int toX, int toY) {
+
+        int smaller;
+        int greater;
+
+        if (fromX < toX) {
+            smaller = fromX;
+            greater = toX;
+        } else {
+            smaller = toX;
+            greater = fromX;
+
+        }
+
+        for (int cur = smaller + 1; cur < greater; cur++) {
+            if (piecePresent(cur, fromY)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether there is a piece between two coordinates horizontally.
+     *
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return
+     */
+    private boolean checkHorizontalPath(int fromX, int fromY, int toX, int toY){
+
+        int smaller;
+        int greater;
+
+        if(fromY < toY){
+            smaller = fromY;
+            greater = toY;
+        }else {
+            smaller = toY;
+            greater = fromY;
+
+        }
+
+        for (int cur = smaller + 1; cur < greater; cur++){
+            if (piecePresent(fromX,cur)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether there is a figure in the path between the coordinates.
+     *
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return true if there is a piece, else false.
+     */
+    private boolean checkDiagPath(int fromX, int fromY, int toX, int toY){
+
+        if( (toX < fromX)&& (toY < fromY)){
+
+            int curX = fromX - 1;
+            int curY = fromY - 1;
+
+            while (toX < curX && toY < curY){
+                if (piecePresent(curX,curY)){
+                    return true;
+                }
+                curX--;
+                curY--;
+            }
+
+        }else if(( toX < fromX) && (toY > fromY) ) {
+
+            int curX = fromX - 1;
+            int curY = fromY + 1;
+
+            while (toX < curX && toY > curY){
+                if (piecePresent(curX,curY)){
+                    return true;
+                }
+                curX--;
+                curY++;
+            }
+
+        }else if( (toX > fromX) && (toY < fromY) ){
+
+            int curX = fromX + 1;
+            int curY = fromY - 1;
+
+            while (toX > curX && toY < curY){
+                if (piecePresent(curX,curY)){
+                    return true;
+                }
+                curX++;
+                curY--;
+            }
+
+        }else{
+
+            int curX = fromX + 1;
+            int curY = fromY + 1;
+
+            while (toX > curX && toY > curY){
+                if (piecePresent(curX,curY)){
+                    return true;
+                }
+                curX++;
+                curY++;
+            }
+
+        }
+
+        return false;
+
     }
 }

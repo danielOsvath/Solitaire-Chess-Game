@@ -1,5 +1,7 @@
 package backtracking;
 
+import model.BoardPiece;
+
 import java.util.Collection;
 
 /**
@@ -9,6 +11,8 @@ import java.util.Collection;
  * interface.
  *
  * @author sps
+ * @author Daniel Osvath Londono
+ * @author Nathan Cassata
  */
 public interface Configuration {
     /**
@@ -30,4 +34,12 @@ public interface Configuration {
      * @return true if goal; false otherwise
      */
     public boolean isGoal();
+
+    /**
+     * Get the board of the configuration.
+     * @return
+     */
+    public BoardPiece[][] getBoard();
+
+    public void printBoard();
 }

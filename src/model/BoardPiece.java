@@ -3,7 +3,13 @@
  */
 package model;
 
+import model.pieces.*;
+
 import java.util.List;
+
+//import for constants
+import static model.SoltrChessModel.*;
+
 
 /**
  * This interface is created to represent a Chess Piece.
@@ -110,5 +116,16 @@ public class BoardPiece {
         return this.name + " at (" + x + ", " + y + ")";
     }
 
+    public BoardPiece clone(){
 
+        switch (this.getAbbr()){
+            case PAWN: return new Pawn(this.x,this.y);
+            case BISHOP: return new Bishop(this.x,this.y);
+            case KING: return new King(this.x,this.y);
+            case KNIGHT: return new Knight(this.x,this.y);
+            case QUEEN: return new Queen(this.x,this.y);
+            case ROOK: return new Rook(this.x,this.y);
+            default: return new Blank(this.x,this.y);
+        }
+    }
 }

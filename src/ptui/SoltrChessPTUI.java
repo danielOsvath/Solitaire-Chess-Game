@@ -102,6 +102,8 @@ public class SoltrChessPTUI implements Observer {
                 case "solve":
 
                     System.out.println("SOLVE");
+                    model.solve();
+
                     break;
 
                 case "quit":

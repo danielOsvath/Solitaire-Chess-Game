@@ -10,6 +10,7 @@ import model.SoltrChessModel;
 import model.pieces.Blank;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import static model.SoltrChessModel.*;
@@ -27,16 +28,31 @@ public class SoltrChessConfig implements Configuration{
 
     /**
      *
-     * @param copy
+     * @param board
      */
-    public SoltrChessConfig(SoltrChessConfig copy){
+    public SoltrChessConfig(BoardPiece[][] board){
 
         config = new BoardPiece[DIMENSION][DIMENSION];
 
-        //Copy config arrray
-        for(int i = 0; i < copy.config.length; i++){
-            System.arraycopy(copy.config[i], 0, this.config[i],
-                    0, copy.config[i].length);
+        for(int row = 0; row < DIMENSION; row++){
+            for (int col = 0; col < DIMENSION; col++){
+                this.config[row][col] = board[row][col].clone();
+            }
+        }
+    }
+
+    /**
+     *
+     * @param copy
+     */
+    public SoltrChessConfig(SoltrChessConfig  copy){
+
+        this.config = new BoardPiece[DIMENSION][DIMENSION];
+
+        for(int row = 0; row < DIMENSION; row++){
+            for (int col = 0; col < DIMENSION; col++){
+                this.config[row][col] = copy.config[row][col].clone();
+            }
         }
 
     }
@@ -54,7 +70,8 @@ public class SoltrChessConfig implements Configuration{
 
             for (BoardPiece piece : row){
 
-                if(!piece.getName().equals(BLANK)){
+                if(!(piece.getAbbr().equals(BLANK))){
+
                     for ( int[] coordinates: getPossibleMoves(piece)){
 
                         SoltrChessConfig successor = new SoltrChessConfig(this);
@@ -69,7 +86,7 @@ public class SoltrChessConfig implements Configuration{
             }
         }
 
-        return null;
+        return successors;
     }
 
     /**
@@ -119,7 +136,7 @@ public class SoltrChessConfig implements Configuration{
                 int myX = mypiece.x;
                 int myY = mypiece.y;
 
-                if ( !(current.getName().equals(BLANK)) &&
+                if ( !(current.getAbbr().equals(BLANK)) &&
                         !(myX == toX && myY == toY) ) {
 
                     if(mypiece.canMoveTo(toX,toY)){
@@ -152,5 +169,22 @@ public class SoltrChessConfig implements Configuration{
         }
 
         return (countPiece == 1);
+    }
+
+    @Override
+    public BoardPiece[][] getBoard(){
+        return config;
+    }
+
+    @Override
+    public void printBoard(){
+
+        for(BoardPiece[] row : config){
+            for(BoardPiece element : row){
+                System.out.print(element.getAbbr() + " ");
+            }
+            System.out.print("\n");
+        }
+
     }
 }

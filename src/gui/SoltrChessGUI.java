@@ -146,10 +146,9 @@ public class SoltrChessGUI extends Application implements Observer {
 
         BoardPiece[][] boardPieces = model.getBoard();
 
-        for(int i=0;i<SoltrChessModel.DIMENSION;i++)
-        {
-            for(int j=0;j<SoltrChessModel.DIMENSION;j++)
-            {
+        for(int i=0;i<SoltrChessModel.DIMENSION;i++) {
+
+            for(int j=0;j<SoltrChessModel.DIMENSION;j++) {
                 ObservableList<Node> childrens = grid.getChildren();
                 //Matches coordinates of grid to items on GridPane
                 for (Node node : childrens) {
