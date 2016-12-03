@@ -38,11 +38,6 @@ public class SoltrChessGUI extends Application implements Observer {
     private GridPane grid;
     private Label messageField;
 
-    //Remembers which location is selected
-    private int currentSelectedCol = -1;
-    private int currentSelectedRow = -1;
-
-
 
     /**
      * Construct the layout for the game.
@@ -55,7 +50,7 @@ public class SoltrChessGUI extends Application implements Observer {
 
         grid = new GridPane();
 
-        messageField = new Label();
+        messageField = new Label("Select a Piece");
 
         for(int i=0;i< SoltrChessModel.DIMENSION;i++)
         {
@@ -83,38 +78,68 @@ public class SoltrChessGUI extends Application implements Observer {
         stage.setTitle("Solitaire Chess");
         stage.setScene(scene);
         stage.show();
+
+        for(BoardPiece[] row : model.getBoard()){
+            for(BoardPiece element : row){
+                System.out.print(element.getAbbr() + " ");
+            }
+            System.out.print("\n");
+        }
     }
 
     private void pieceSelected(Button button)
     {
-        int col = grid.getColumnIndex(button);
-        int row = grid.getRowIndex(button);
-
+        //All the pieces on the board
         BoardPiece[][] boardPieces = model.getBoard();
-        BoardPiece pieceSelectedObj = boardPieces[row][col];
 
-        messageField.setText(pieceSelectedObj.getName() + " Selected");
-        System.out.println("COL: " + col + " ROW: " + row + " Selected: " + pieceSelectedObj.getName());
+        //coordinates of button on grid view
+        int y = grid.getColumnIndex(button);
+        int x = grid.getRowIndex(button);
 
-        if(currentSelectedCol == -1 &&currentSelectedRow == -1) {
+        //If there is a piece that is already selected it is referenced here
+        BoardPiece pieceAlreadySelected = null;
 
-            //Updates selected position
-            currentSelectedCol = col;
-            currentSelectedRow = row;
-
-        } else {
-            if(model.canMovePieceTo(currentSelectedCol,currentSelectedRow,row,col)) {
-                model.movePieceTo(currentSelectedCol,currentSelectedRow,row,col);
-
-
-                if(model.isGoal()) {System.out.println("You won. Congratulations!");}
-            }else {
-                messageField.setText("Invalid Move!");
-                currentSelectedRow = -1;
-                currentSelectedCol = -1;
-                displayBoard();
+        //If one exists finds piece already selected
+        for(BoardPiece[]boardRow:boardPieces)
+        {
+            for(BoardPiece piece:boardRow)
+            {
+                if(piece.selected)
+                {
+                    pieceAlreadySelected = piece;
+                }
             }
         }
+
+        //For Piece currently selected
+        BoardPiece pieceCurrentlySelected = boardPieces[x][y];
+        pieceCurrentlySelected.selected = true;
+
+        messageField.setText(pieceCurrentlySelected.getName() + " Selected");
+//        System.out.println("(" + x + " , " + y + ") Selected: " + pieceCurrentlySelected.getName());
+
+        if(!(pieceAlreadySelected==null)) {
+//            System.out.println("This piece currently selected: " + pieceAlreadySelected.getName());
+//
+//            System.out.println("(" +pieceAlreadySelected.x + ", " + pieceAlreadySelected.y + ") "
+//                    + "trying to move to: (" + x + " , " + y + ")");
+
+            if(model.canMovePieceTo(pieceAlreadySelected.x, pieceAlreadySelected.y, x,y))
+            {
+//                System.out.println("Can Move to");
+                model.movePieceTo(pieceAlreadySelected.x, pieceAlreadySelected.y, x,y);
+                pieceAlreadySelected.selected = false;
+                messageField.setText("Select a Piece");
+                if(model.isGoal())
+                {
+                    messageField.setText("You won! No moves left.");
+                }
+            }
+        } else {
+            BoardPiece pieceSelectedObj = boardPieces[x][y];
+            pieceSelectedObj.selected = true;
+        }
+
     }
 
     public void displayBoard(){
@@ -130,9 +155,11 @@ public class SoltrChessGUI extends Application implements Observer {
                 for (Node node : childrens) {
                     if(grid.getRowIndex(node) == i && grid.getColumnIndex(node) == j) {
                         Button result = (Button)node;
-                        if(!boardPieces[i][j].getName().equals("Blank"))
+                        result.setText(boardPieces[i][j].getName());
+
+                        if(boardPieces[i][j].getName().equals("Blank"))
                         {
-                            result.setText(boardPieces[i][j].getName());
+                            result.setText("");
                         }
                         break;
                     }
@@ -140,13 +167,6 @@ public class SoltrChessGUI extends Application implements Observer {
 
             }
         }
-
-//        for(BoardPiece[] row : model.getBoard()){
-//            for(BoardPiece element : row){
-//                System.out.print(element.getAbbr() + " ");
-//            }
-//            System.out.print("\n");
-//        }
     }
 
     /**
@@ -156,9 +176,8 @@ public class SoltrChessGUI extends Application implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-        displayBoard();
         System.out.println("Update called");
-        System.out.println("");
+        displayBoard();
     }
 
     /**
