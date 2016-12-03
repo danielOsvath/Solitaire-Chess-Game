@@ -40,7 +40,7 @@ public class SoltrChessGUI extends Application implements Observer {
 
 
     /**
-     * Construct the layout for the game.
+     * Construct the layout for the game. 
      *
      * @param stage container (window) in which to render the UI
      */
