@@ -27,6 +27,8 @@ import model.SoltrChessModel;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.charset.MalformedInputException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -67,8 +69,8 @@ public class SoltrChessGUI extends Application implements Observer {
      */
     public void start( Stage stage ) {
 
+        //Making the BorderPane and GridView
         borderPane = new BorderPane();
-
         grid = new GridPane();
 
         generateGrid();
@@ -94,7 +96,7 @@ public class SoltrChessGUI extends Application implements Observer {
                 File file = fileChooser.showOpenDialog(stage);
                 if (file != null) {
                     filename = file.getPath();
-                    restartModel();
+                    newGameModel(filename);
                 }
             }
         });
@@ -148,13 +150,10 @@ public class SoltrChessGUI extends Application implements Observer {
     /**
      * Generates the grid.
      */
-    private void generateGrid()
-    {
+    private void generateGrid() {
         //Center GridView
-        for(int i=0;i< SoltrChessModel.DIMENSION;i++)
-        {
-            for(int j=0;j<SoltrChessModel.DIMENSION;j++)
-            {
+        for(int i=0;i< SoltrChessModel.DIMENSION;i++) {
+            for(int j=0;j<SoltrChessModel.DIMENSION;j++) {
                 Button button = new Button();
                 button.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
                     @Override
@@ -170,8 +169,7 @@ public class SoltrChessGUI extends Application implements Observer {
 
     }
 
-    private void pieceSelected(Button button)
-    {
+    private void pieceSelected(Button button) {
 
         Background selectedBackground = new Background(blue);
         button.setBackground(selectedBackground);
@@ -187,12 +185,9 @@ public class SoltrChessGUI extends Application implements Observer {
         BoardPiece pieceAlreadySelected = null;
 
         //If one exists finds piece already selected
-        for(BoardPiece[]boardRow:boardPieces)
-        {
-            for(BoardPiece piece:boardRow)
-            {
-                if(piece.selected)
-                {
+        for(BoardPiece[]boardRow:boardPieces) {
+            for(BoardPiece piece:boardRow) {
+                if(piece.selected) {
                     pieceAlreadySelected = piece;
                 }
             }
@@ -273,9 +268,11 @@ public class SoltrChessGUI extends Application implements Observer {
 
 
     private void restartModel(){
-        this.model = new SoltrChessModel(this.filename);
-        this.model.addObserver(this);
-        displayBoard();
+        tryToOpenFile(this.filename, false);
+    }
+
+    private void newGameModel(String filename){
+        tryToOpenFile(filename, false);
     }
 
     private void instantiateImages() {
@@ -291,8 +288,7 @@ public class SoltrChessGUI extends Application implements Observer {
         white = new BackgroundImage(new Image(getClass().getResource("resources/white.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
     }
 
-    private void setPieceImage(Button button, String name)
-    {
+    private void setPieceImage(Button button, String name) {
         ImageView img = new ImageView();
         if(name.equals("Bishop")) {
             img = new ImageView(bishop);
@@ -343,6 +339,24 @@ public class SoltrChessGUI extends Application implements Observer {
                 }
 
             }
+        }
+    }
+
+    /**
+     *
+     * @param filename
+     */
+    private void tryToOpenFile(String filename, boolean initial){
+        try {
+            this.model = new SoltrChessModel(filename);
+            this.model.addObserver(this);
+            displayBoard();
+        }catch (FileNotFoundException w){
+            System.out.println("File Not Found");
+            if(initial) System.exit(1);
+        }catch (MalformedInputException e){
+            System.out.println("Board in file is malformed.");
+            if(initial) System.exit(1);
         }
     }
 
