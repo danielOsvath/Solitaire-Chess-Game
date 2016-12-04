@@ -305,6 +305,10 @@ public class SoltrChessGUI extends Application implements Observer {
 
     }
 
+    /**
+     * If one exists finds piece already selected
+     * @return the BoardPiece
+     */
     private BoardPiece findSelected(){
         //If one exists finds piece already selected
         for(BoardPiece[] boardRow : model.getBoard()) {
