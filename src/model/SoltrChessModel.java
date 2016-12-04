@@ -217,7 +217,6 @@ public class SoltrChessModel extends Observable {
      * Needed for GUI
      */
     public List<Configuration> getSolveSteps(){
-
         SoltrChessConfig config = new SoltrChessConfig(board);
         return solver.solveWithPath(config);
     }

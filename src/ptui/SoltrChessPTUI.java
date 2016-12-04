@@ -107,8 +107,7 @@ public class SoltrChessPTUI implements Observer {
                         System.out.println("You won! No moves left.");
                         break;
                     }
-                    if(!model.solve())
-                        System.out.println("Cannot solve current configuration.");
+                    if(!model.solve()) System.out.println("Current Configuration not solvable.");
                     break;
 
                 case "quit":

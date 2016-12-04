@@ -92,7 +92,7 @@ public class Backtracker {
     private Configuration aChildHasSolution(Configuration current){
 
         for (Configuration child : current.getSuccessors()) {
-            if (solve(child) != null) {
+            if (solve(child).isPresent()) {
                 return child;
             }
         }
