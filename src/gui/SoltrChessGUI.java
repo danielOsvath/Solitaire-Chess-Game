@@ -45,10 +45,6 @@ public class SoltrChessGUI extends Application implements Observer {
     private BorderPane borderPane;
     private GridPane grid;
     private Label messageField;
-    private Button newGameBtn;
-    private Button restartBtn;
-    private Button hintBtn;
-    private Button solveBtn;
 
     //PiecesImages
     private Image bishop;
@@ -88,7 +84,7 @@ public class SoltrChessGUI extends Application implements Observer {
         //Bottom Box
         HBox bottomBox = new HBox();
         bottomBox.setAlignment(Pos.CENTER);
-        newGameBtn = new Button("New Game");
+        Button newGameBtn = new Button("New Game");
         newGameBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -102,14 +98,14 @@ public class SoltrChessGUI extends Application implements Observer {
             }
         });
 
-        restartBtn = new Button("Restart");
+        Button restartBtn = new Button("Restart");
         restartBtn.setOnAction(event -> {
             tryToOpenFile(filename,false);
             messageField.setText("Game loaded: " + filename);
 //            initializeView();
         });
 
-        hintBtn = new Button("Hint");
+        Button hintBtn = new Button("Hint");
         hintBtn.setOnAction( event -> {
             if(model.isGoal()){
                 messageField.setText("You won! No moves left.");
@@ -119,7 +115,7 @@ public class SoltrChessGUI extends Application implements Observer {
             }
         } );
 
-        solveBtn = new Button("Solve");
+        Button solveBtn = new Button("Solve");
 
         solveBtn.setOnAction( event -> {
             if(model.isGoal()){
