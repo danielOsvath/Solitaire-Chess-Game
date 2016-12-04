@@ -10,6 +10,7 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -120,17 +121,20 @@ public class SoltrChessGUI extends Application implements Observer {
             }
         });
         solveBtn = new Button("Solve");
-        solveBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if(model.isGoal()){
-                    messageField.setText("You won! No moves left.");
-                } else {
-                    messageField.setText("Solving Puzzle");
-                    model.solve();
+
+        solveBtn.setOnAction( event -> {
+            if(model.isGoal()){
+                messageField.setText("You won! No moves left.");
+            }else {
+                if(this.model.getSolveSteps() != null){
+                    Thread sol = new SolveWithGUI(model);
+                    sol.start();
+                }else{
+                    messageField.setText("No solution possible from current state.");
                 }
             }
-        });
+        } );
+
         bottomBox.getChildren().addAll(newGameBtn, restartBtn, hintBtn, solveBtn);
         borderPane.setBottom(bottomBox);
 
@@ -364,14 +368,22 @@ public class SoltrChessGUI extends Application implements Observer {
 
     /**
      *
+     * @param o
+     * @param arg
+     */
+    public void updateMethod(Observable o, Object arg) {
+        displayBoard();
+        if(model.isGoal()) messageField.setText("Congratulations, you won!");
+    }
+
+    /**
+     *
      * @param observable
      * @param o
      */
     @Override
     public void update(Observable observable, Object o) {
-        System.out.println("Update called");
-        displayBoard();
-
+        Platform.runLater(() -> updateMethod(observable,o));
     }
 
     /**

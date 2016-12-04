@@ -23,7 +23,6 @@ public class SolveWithGUI extends Thread {
 
     /* */
     private SoltrChessModel model;
-    private Label messagefield;
 
     /**
      *
