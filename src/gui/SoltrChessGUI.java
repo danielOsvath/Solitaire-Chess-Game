@@ -63,7 +63,7 @@ public class SoltrChessGUI extends Application implements Observer {
         grid = new GridPane();
 
         generateGrid();
-        messageField = new Label("Select a Piece");
+        messageField = new Label("Loaded " + filename);
 
         instantiateImages();
 
@@ -126,7 +126,7 @@ public class SoltrChessGUI extends Application implements Observer {
         borderPane.setBottom(bottomBox);
 
         Scene scene = new Scene(borderPane);
-        stage.setTitle("Solitaire Chess");
+        stage.setTitle("Solitaire Chess - Nathan & Daniel");
         stage.setScene(scene);
         stage.show();
 
@@ -350,12 +350,30 @@ public class SoltrChessGUI extends Application implements Observer {
                 displayBoard();
             }
         }catch (FileNotFoundException w){
-            System.out.println("File Not Found");
-            if(initial) System.exit(1);
+            if(initial){
+                System.out.println("File Not Found");
+                System.exit(1);
+            }else{
+                createWarningWindow("File Not Found");
+            }
         }catch (MalformedInputException e){
-            System.out.println("Board in file is malformed.");
-            if(initial) System.exit(1);
+            if(initial) {
+                System.out.println("Board in file is malformed.");
+                System.exit(1);
+            } else {
+                createWarningWindow("Board in file is malformed.");
+            }
         }
+    }
+
+    private void createWarningWindow(String message) {
+        Label label = new Label(message);
+        Scene scene = new Scene(label);
+
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Warning!");
+        stage.show();
     }
 
     /**
@@ -390,6 +408,7 @@ public class SoltrChessGUI extends Application implements Observer {
         System.out.println(filename);
 
         tryToOpenFile(filename, true);
+
         this.model = new SoltrChessModel(this.filename);
         this.model.addObserver(this);
     }
