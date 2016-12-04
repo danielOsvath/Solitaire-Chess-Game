@@ -27,9 +27,8 @@ public class SolveWithGUI extends Thread {
     /**
      *
      * @param model
-     * @param messagefield
      */
-    public SolveWithGUI(SoltrChessModel model, Label messagefield){
+    public SolveWithGUI(SoltrChessModel model){
         this.model = model;
     }
 
