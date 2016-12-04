@@ -349,8 +349,10 @@ public class SoltrChessGUI extends Application implements Observer {
     private void tryToOpenFile(String filename, boolean initial){
         try {
             this.model = new SoltrChessModel(filename);
-            this.model.addObserver(this);
-            displayBoard();
+            if(!initial) {
+                this.model.addObserver(this);
+                displayBoard();
+            }
         }catch (FileNotFoundException w){
             System.out.println("File Not Found");
             if(initial) System.exit(1);
@@ -383,7 +385,7 @@ public class SoltrChessGUI extends Application implements Observer {
         filename = getParameters().getRaw().get(0);
         System.out.println(filename);
 
-        System.out.println("The filename is: "+this.filename);
+        tryToOpenFile(filename, true);
         this.model = new SoltrChessModel(this.filename);
         this.model.addObserver(this);
     }
