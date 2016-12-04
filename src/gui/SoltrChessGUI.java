@@ -50,6 +50,21 @@ public class SoltrChessGUI extends Application implements Observer {
     private BackgroundImage light;
     private BackgroundImage blue;
 
+    /**
+     * Initializes the GUI
+     * @throws Exception
+     */
+    @Override
+    public void init() throws Exception {
+
+        filename = getParameters().getRaw().get(0);
+
+        tryToOpenFile(filename, true);
+        this.model.addObserver(this);
+
+        instantiateImages();
+    }
+
 
     /**
      * Construct the layout for the game.
@@ -69,6 +84,30 @@ public class SoltrChessGUI extends Application implements Observer {
         this.stage = stage;
     }
 
+    /**
+     * Updates the model and the board
+     * @param o the observable
+     * @param arg the object
+     */
+    public void updateMethod(Observable o, Object arg) {
+        displayBoard();
+        if(model.isGoal()) messageField.setText("Congratulations, you won!");
+    }
+
+    /**
+     * The MVC update method
+     * @param observable the observable
+     * @param o the object
+     */
+    @Override
+    public void update(Observable observable, Object o) {
+        Platform.runLater(() -> updateMethod(observable,o));
+    }
+
+    /**
+     * Creates the BorderPane for the game
+     * @return the BorderPane
+     */
     private BorderPane makeborderPane(){
 
         //Making the BorderPane
@@ -83,6 +122,10 @@ public class SoltrChessGUI extends Application implements Observer {
 
     }
 
+    /**
+     * Creates the HBOX for the top Message Field
+     * @return the HBOX with the message field
+     */
     private HBox topMessage(){
 
         HBox top = new HBox();
@@ -93,6 +136,10 @@ public class SoltrChessGUI extends Application implements Observer {
         return top;
     }
 
+    /**
+     * Creates an HBOX for the bottom control buttons
+     * @return the Bottom HBOX
+     */
     private HBox bottomControls(){
 
         HBox bottomBox = new HBox();
@@ -138,9 +185,12 @@ public class SoltrChessGUI extends Application implements Observer {
         return bottomBox;
     }
 
+    /**
+     * Opens a window to open a new board file
+     */
     private void openFileWindow(){
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Open New Board File");
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             filename = file.getPath();
@@ -150,6 +200,7 @@ public class SoltrChessGUI extends Application implements Observer {
 
     /**
      * Generates the grid.
+     * @return the GridPane
      */
     private GridPane generateGrid() {
 
@@ -193,6 +244,10 @@ public class SoltrChessGUI extends Application implements Observer {
         return grid;
     }
 
+    /**
+     * Sets the current board piece selected
+     * @param button the button pushed
+     */
     private void pieceSelected(Button button) {
 
         Background selectedBackground = new Background(blue);
@@ -222,19 +277,14 @@ public class SoltrChessGUI extends Application implements Observer {
         pieceCurrentlySelected.selected = true;
 
         messageField.setText(pieceCurrentlySelected.getName() + " Selected");
-        System.out.println("(" + x + " , " + y + ") Selected: " + pieceCurrentlySelected.getName());
 
         if(!(pieceAlreadySelected==null)) {
-            System.out.println("This piece currently selected: " + pieceAlreadySelected.getName());
-
-            System.out.println("(" +pieceAlreadySelected.x + ", " + pieceAlreadySelected.y + ") "
-                    + "trying to move to: (" + x + " , " + y + ")");
 
             if(model.canMovePieceTo(pieceAlreadySelected.x, pieceAlreadySelected.y, x,y)) {
-                System.out.println("Can Move to");
                 model.movePieceTo(pieceAlreadySelected.x, pieceAlreadySelected.y, x,y);
                 pieceAlreadySelected.selected = false;
-                messageField.setText("Select a Piece");
+                messageField.setText(pieceAlreadySelected.getName()+" moved to "+ "(" + pieceCurrentlySelected.x+
+                        ", " + pieceCurrentlySelected.y + ") terminating " + pieceCurrentlySelected.getName());
                 if(model.isGoal())
                 {
                     messageField.setText("You won! No moves left.");
@@ -253,6 +303,9 @@ public class SoltrChessGUI extends Application implements Observer {
 
     }
 
+    /**
+     * Displays the board using the model
+     */
     public void displayBoard(){
 
         for(int row = 0; row < SoltrChessModel.DIMENSION; row++) {
@@ -274,10 +327,10 @@ public class SoltrChessGUI extends Application implements Observer {
     }
 
     /**
-     *
-     * @param row
-     * @param col
-     * @return
+      Return the button from Grid using supplied coordinates
+     * @param row the row coordinate
+     * @param col the col coordinate
+     * @return the Button
      */
     private Button getButtonAt(int row, int col){
 
@@ -294,11 +347,9 @@ public class SoltrChessGUI extends Application implements Observer {
     }
 
 
-    private void restartModel(){
-        tryToOpenFile(this.filename, false);
-    }
-
-
+    /**
+     * Instatiates the background images for the buttons
+     */
     private void instantiateImages() {
 
         dark = new BackgroundImage(new Image(getClass().
@@ -318,9 +369,9 @@ public class SoltrChessGUI extends Application implements Observer {
     }
 
     /**
-     *
-     * @param name
-     * @return
+     * Returns the ImageView for the piece's type
+     * @param name the name of the piece
+     * @return the ImageView
      */
     private ImageView getBtnImage(String  name){
 
@@ -335,6 +386,12 @@ public class SoltrChessGUI extends Application implements Observer {
         return view;
     }
 
+    /**
+     * Get the button's background for the coordinate
+     * @param row the row coordinate
+     * @param col the column coordinate
+     * @return the Background
+     */
     private Background getBtnBackground(int row, int col){
 
         Background selectedBackground;
@@ -352,8 +409,8 @@ public class SoltrChessGUI extends Application implements Observer {
 
 
     /**
-     *
-     * @param filename
+     * Attempts to open the file using what the user supplied
+     * @param filename the filename the user supplied
      */
     private void tryToOpenFile(String filename, boolean initial){
         try {
@@ -379,6 +436,10 @@ public class SoltrChessGUI extends Application implements Observer {
         }
     }
 
+    /**
+     * Generates a warning window with the supplied message
+     * @param message the supplied message
+     */
     private void createWarningWindow(String message) {
         Label label = new Label(message);
         Scene scene = new Scene(label);
@@ -389,42 +450,5 @@ public class SoltrChessGUI extends Application implements Observer {
         stage.show();
     }
 
-    /**
-     *
-     * @param o
-     * @param arg
-     */
-    public void updateMethod(Observable o, Object arg) {
-        displayBoard();
-        if(model.isGoal()) messageField.setText("Congratulations, you won!");
-    }
-
-    /**
-     *
-     * @param observable
-     * @param o
-     */
-    @Override
-    public void update(Observable observable, Object o) {
-        Platform.runLater(() -> updateMethod(observable,o));
-    }
-
-    /**
-     * Initializes the GUI
-     * @throws Exception
-     */
-    @Override
-    public void init() throws Exception {
-
-        filename = getParameters().getRaw().get(0);
-        System.out.println(filename);
-
-        tryToOpenFile(filename, true);
-
-        this.model = new SoltrChessModel(this.filename);
-        this.model.addObserver(this);
-
-        instantiateImages();
-    }
 
 }
