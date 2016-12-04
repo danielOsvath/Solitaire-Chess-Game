@@ -173,7 +173,7 @@ public class SoltrChessModel extends Observable {
     /**
      * Solve the puzzle, update the model along the way.
      */
-    public void solve(){
+    public boolean solve(){
 
         SoltrChessConfig config = new SoltrChessConfig(board);
 
@@ -196,8 +196,11 @@ public class SoltrChessModel extends Observable {
 
             }
 
+            return true;
+
         }else {
             System.out.println("Cannot solve current configuration.");
+            return false;
         }
 
     }
@@ -205,7 +208,7 @@ public class SoltrChessModel extends Observable {
     /**
      *
      */
-    public void hint(){
+    public boolean hint(){
 
         SoltrChessConfig config = new SoltrChessConfig(board);
 
@@ -229,8 +232,12 @@ public class SoltrChessModel extends Observable {
             setChanged();
             notifyObservers();
 
+            return true;
+
         }else {
             System.out.println("Not solvable, no hint.");
+
+            return false;
         }
 
     }
