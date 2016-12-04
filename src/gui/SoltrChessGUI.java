@@ -42,7 +42,6 @@ public class SoltrChessGUI extends Application implements Observer {
 
     private SoltrChessModel model;
     private String filename;
-    private BorderPane borderPane;
     private GridPane grid;
     private Label messageField;
 
@@ -67,7 +66,7 @@ public class SoltrChessGUI extends Application implements Observer {
     public void start( Stage stage ) {
 
         //Making the BorderPane and GridView
-        borderPane = new BorderPane();
+        BorderPane borderPane = new BorderPane();
         grid = new GridPane();
 
         generateGrid();
