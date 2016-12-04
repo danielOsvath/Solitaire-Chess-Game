@@ -172,12 +172,11 @@ public class SoltrChessModel extends Observable {
 
     /**
      * Solve the puzzle, update the model along the way.
+     * Works fo PTUI.
      */
     public boolean solve(){
 
-        SoltrChessConfig config = new SoltrChessConfig(board);
-
-        List<Configuration> steps = solver.solveWithPath(config);
+        List<Configuration> steps = getSolveSteps();
 
         if(steps != null){
 
@@ -206,14 +205,27 @@ public class SoltrChessModel extends Observable {
 
     }
 
+    public void setBoard(BoardPiece[][] toSet){
+        this.board = toSet;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Needed for GUI
+     */
+    public List<Configuration> getSolveSteps(){
+
+        SoltrChessConfig config = new SoltrChessConfig(board);
+        return solver.solveWithPath(config);
+    }
+
     /**
      *
      */
     public boolean hint(){
 
-        SoltrChessConfig config = new SoltrChessConfig(board);
-
-        List<Configuration> steps = solver.solveWithPath(config);
+        List<Configuration> steps = getSolveSteps();
 
 
         // current not int list -> not winnable.
