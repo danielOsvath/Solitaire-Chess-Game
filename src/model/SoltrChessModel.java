@@ -41,6 +41,7 @@ public class SoltrChessModel extends Observable {
      */
     private BoardPiece[][] board;
     private Backtracker solver;
+    public int solveStep;
 
     /**
      * Construct a SoltrChessModel
@@ -205,8 +206,9 @@ public class SoltrChessModel extends Observable {
 
     }
 
-    public void setBoard(BoardPiece[][] toSet){
+    public void setBoard(BoardPiece[][] toSet, int sovestep){
         this.board = toSet;
+        this.solveStep = sovestep;
         setChanged();
         notifyObservers();
     }

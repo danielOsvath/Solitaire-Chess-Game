@@ -23,6 +23,7 @@ public class SolveWithGUI extends Thread {
 
     /* */
     private SoltrChessModel model;
+    private Label messagefield;
 
     /**
      *
@@ -39,17 +40,13 @@ public class SolveWithGUI extends Thread {
 
         List<Configuration> steps = this.model.getSolveSteps();
 
-        if(steps != null){
+        for (int curStep = 1; curStep < steps.size(); curStep++){
 
-            for (int curStep = 1; curStep < steps.size(); curStep++){
+            model.setBoard(steps.get(curStep).getBoard(),curStep);
 
-                model.setBoard(steps.get(curStep).getBoard());
-
-                try{
-                    TimeUnit.SECONDS.sleep(1);
-                }catch (InterruptedException e){
-
-                }
+            try{
+                TimeUnit.SECONDS.sleep(1);
+            }catch (InterruptedException e){
 
             }
 
