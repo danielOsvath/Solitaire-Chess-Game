@@ -11,6 +11,7 @@ import model.pieces.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.charset.MalformedInputException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -46,20 +47,15 @@ public class SoltrChessModel extends Observable {
     /**
      * Construct a SoltrChessModel
      */
-    public SoltrChessModel(String filename) {
+    public SoltrChessModel(String filename) throws FileNotFoundException, MalformedInputException{
 
         board = new BoardPiece[DIMENSION][DIMENSION];
         solver = new Backtracker();
 
         File file = new File(filename);
-        try {
-            Scanner sc = new Scanner(file);
-            readBoardFromfile(sc);
 
-        } catch (FileNotFoundException e) {
-            System.out.println("File Not Found");
-            System.exit(1);
-        }
+        Scanner sc = new Scanner(file);
+        readBoardFromfile(sc);
 
     }
 
@@ -67,7 +63,7 @@ public class SoltrChessModel extends Observable {
      *
      * @param sc
      */
-    private void readBoardFromfile(Scanner sc){
+    private void readBoardFromfile(Scanner sc) throws MalformedInputException{
 
         for (int i = 0; i < DIMENSION; i++){
 
@@ -76,13 +72,13 @@ public class SoltrChessModel extends Observable {
                 if(sc.hasNext()){
                     String current = sc.next();
 
-                    if(current.length() > 1) malformed();
+                    if(current.length() > 1) throw new MalformedInputException(0);
 
                     BoardPiece piece = getPiece(i,j,current);
                     board[i][j] = piece;
                 }
                 else{
-                    malformed();
+                    throw new MalformedInputException(0);
                 }
             }
 
@@ -90,13 +86,6 @@ public class SoltrChessModel extends Observable {
 
     }
 
-    /**
-     *
-     */
-    private void malformed(){
-        System.out.println("Board in file is malformed.");
-        System.exit(1);
-    }
 
     /**
      *
@@ -217,6 +206,7 @@ public class SoltrChessModel extends Observable {
      * Needed for GUI
      */
     public List<Configuration> getSolveSteps(){
+
         SoltrChessConfig config = new SoltrChessConfig(board);
         return solver.solveWithPath(config);
     }

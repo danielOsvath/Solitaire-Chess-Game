@@ -5,6 +5,9 @@ package ptui;
 
 import backtracking.Backtracker;
 import model.*;
+
+import java.io.FileNotFoundException;
+import java.nio.charset.MalformedInputException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -29,7 +32,7 @@ public class SoltrChessPTUI implements Observer {
     public SoltrChessPTUI( String fileName ) {
         originalfile = fileName;
         System.out.println("Game File: " + fileName);
-        model = new SoltrChessModel(fileName);
+        tryToOpenFile(fileName,true);
         initializeView();
     }
 
@@ -80,7 +83,7 @@ public class SoltrChessPTUI implements Observer {
                     System.out.print("game file name: ");
                     String newFile = in.nextLine();
                     originalfile = newFile;
-                    this.model = new SoltrChessModel(newFile);
+                    tryToOpenFile(newFile,false);
                     initializeView();
                     checkGoal();
                     break;
@@ -88,7 +91,7 @@ public class SoltrChessPTUI implements Observer {
                 case "restart":
 
                     System.out.println("Restarting game. ");
-                    this.model = new SoltrChessModel(originalfile);
+                    tryToOpenFile(originalfile,false);
                     initializeView();
                     checkGoal();
                     break;
@@ -107,7 +110,8 @@ public class SoltrChessPTUI implements Observer {
                         System.out.println("You won! No moves left.");
                         break;
                     }
-                    if(!model.solve()) System.out.println("Current Configuration not solvable.");
+                    if(!model.solve())
+                        System.out.println("Cannot solve current configuration.");
                     break;
 
                 case "quit":
@@ -117,6 +121,22 @@ public class SoltrChessPTUI implements Observer {
                 default: break;
             }
 
+        }
+    }
+
+    /**
+     *
+     * @param filename
+     */
+    private void tryToOpenFile(String filename, boolean initial){
+        try {
+            this.model = new SoltrChessModel(filename);
+        }catch (FileNotFoundException w){
+            System.out.println("File Not Found");
+            if(initial) System.exit(1);
+        }catch (MalformedInputException e){
+            System.out.println("Board in file is malformed.");
+            if(initial) System.exit(1);
         }
     }
 
