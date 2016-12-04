@@ -99,13 +99,14 @@ public class SoltrChessPTUI implements Observer {
                         break;
                     }
                     System.out.println("HINT");
-                    model.hint();
+                    if(!model.hint()) System.out.println("Not solvable, no hint.");
                     break;
 
                 case "solve":
 
                     System.out.println("SOLVE");
-                    model.solve();
+                    if(!model.solve())
+                        System.out.println("Cannot solve current configuration.");
                     break;
 
                 case "quit":

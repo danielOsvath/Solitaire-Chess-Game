@@ -199,7 +199,6 @@ public class SoltrChessModel extends Observable {
             return true;
 
         }else {
-            System.out.println("Cannot solve current configuration.");
             return false;
         }
 
@@ -235,8 +234,6 @@ public class SoltrChessModel extends Observable {
             return true;
 
         }else {
-            System.out.println("Not solvable, no hint.");
-
             return false;
         }
 
