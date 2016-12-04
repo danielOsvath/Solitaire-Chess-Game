@@ -79,7 +79,6 @@ public class Backtracker {
             }
         }
 
-        System.out.println("No Solution");
         return null;
     }
 

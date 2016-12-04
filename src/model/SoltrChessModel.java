@@ -183,6 +183,8 @@ public class SoltrChessModel extends Observable {
 
             for (int curStep = 1; curStep < steps.size(); curStep++){
 
+                System.out.println("STEP: " + curStep);
+
                 board = steps.get(curStep).getBoard();
 
                 setChanged();
