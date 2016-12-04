@@ -9,6 +9,11 @@ import java.util.Arrays;
  */
 public class Queen extends BoardPiece {
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public Queen(int x, int y) {
         name = "Queen";
         abbr = "Q";
@@ -16,6 +21,14 @@ public class Queen extends BoardPiece {
 
         this.x = x;
         this.y = y;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Queen clone(){
+        return new Queen(this.x,this.y);
     }
 
 }

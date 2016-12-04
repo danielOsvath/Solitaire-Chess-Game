@@ -38,4 +38,12 @@ public class Blank extends BoardPiece {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
+    public Blank clone(){
+        return new Blank(this.x,this.y);
+    }
+
 }

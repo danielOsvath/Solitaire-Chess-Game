@@ -6,12 +6,10 @@ package backtracking;
 
 
 import model.BoardPiece;
-import model.SoltrChessModel;
 import model.ValidateMove;
 import model.pieces.Blank;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import static model.SoltrChessModel.*;
@@ -28,6 +26,7 @@ public class SoltrChessConfig implements Configuration{
     private BoardPiece[][] config;
 
     /**
+     * Constructor for initial class. (called from model)
      *
      * @param board
      */
@@ -43,6 +42,7 @@ public class SoltrChessConfig implements Configuration{
     }
 
     /**
+     * Copy constructor for generating successors.
      *
      * @param copy
      */
@@ -170,6 +170,9 @@ public class SoltrChessConfig implements Configuration{
         return config;
     }
 
+    /**
+     *
+     */
     @Override
     public void printBoard(){
 

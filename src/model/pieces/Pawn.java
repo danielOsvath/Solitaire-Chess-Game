@@ -9,6 +9,11 @@ import java.util.Arrays;
  */
 public class Pawn extends BoardPiece {
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public Pawn(int x, int y) {
         name = "Pawn";
         abbr = "P";
@@ -21,6 +26,12 @@ public class Pawn extends BoardPiece {
         this.y = y;
     }
 
+    /**
+     *
+     * @param toX x value
+     * @param toY y value
+     * @return
+     */
     @Override
     public boolean canMoveTo(int toX, int toY) {
         //limit pawn capture distance to one spot.
@@ -29,6 +40,14 @@ public class Pawn extends BoardPiece {
 
         return ((xChange == 1) && (yChange == 1));
 
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Pawn clone(){
+        return new Pawn(this.x,this.y);
     }
 
 }

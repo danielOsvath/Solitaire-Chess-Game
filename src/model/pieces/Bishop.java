@@ -28,4 +28,12 @@ public class Bishop extends BoardPiece {
         this.x = x;
         this.y = y;
     }
+
+    /**
+     *
+     * @return
+     */
+    public Bishop clone(){
+        return new Bishop(this.x,this.y);
+    }
 }

@@ -18,4 +18,11 @@ public class Rook extends BoardPiece {
         this.y = y;
     }
 
+    /**
+     *
+     * @return
+     */
+    public Rook clone(){
+        return new Rook(this.x,this.y);
+    }
 }

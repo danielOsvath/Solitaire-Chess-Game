@@ -27,4 +27,12 @@ public class Knight extends BoardPiece {
         this.y = y;
     }
 
+    /**
+     *
+     * @return
+     */
+    public Knight clone(){
+        return new Knight(this.x,this.y);
+    }
+
 }

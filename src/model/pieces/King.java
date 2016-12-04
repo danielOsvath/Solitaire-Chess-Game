@@ -40,4 +40,13 @@ public class King extends BoardPiece {
                 moveTypes.contains(typeOfMove(x, y, toX, toY));
 
     }
+
+    /**
+     *
+     * @return
+     */
+    public King clone(){
+        return new King(this.x,this.y);
+    }
+
 }

@@ -17,7 +17,7 @@ import static model.SoltrChessModel.*;
  * @author Nathan Cassata
  * @author Daniel Osvath Londono
  */
-public class BoardPiece {
+public abstract class BoardPiece {
 
     /* Types of moves a figure can make. */
     public List<String> moveTypes;
@@ -116,16 +116,5 @@ public class BoardPiece {
         return this.name + " at (" + x + ", " + y + ")";
     }
 
-    public BoardPiece clone(){
-
-        switch (this.getAbbr()){
-            case PAWN: return new Pawn(this.x,this.y);
-            case BISHOP: return new Bishop(this.x,this.y);
-            case KING: return new King(this.x,this.y);
-            case KNIGHT: return new Knight(this.x,this.y);
-            case QUEEN: return new Queen(this.x,this.y);
-            case ROOK: return new Rook(this.x,this.y);
-            default: return new Blank(this.x,this.y);
-        }
-    }
+    public abstract BoardPiece clone();
 }
