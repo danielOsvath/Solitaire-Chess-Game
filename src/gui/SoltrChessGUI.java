@@ -100,16 +100,7 @@ public class SoltrChessGUI extends Application implements Observer {
         bottomBox.setAlignment(Pos.CENTER);
 
         Button newGameBtn = new Button("New Game");
-        newGameBtn.setOnAction(event -> {
-
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Open Resource File");
-                File file = fileChooser.showOpenDialog(stage);
-                if (file != null) {
-                    filename = file.getPath();
-                    newGameModel(filename);
-                }
-            });
+        newGameBtn.setOnAction(event -> openFileWindow() );
 
         Button restartBtn = new Button("Restart");
         restartBtn.setOnAction(event -> {
@@ -145,6 +136,16 @@ public class SoltrChessGUI extends Application implements Observer {
         bottomBox.getChildren().addAll(newGameBtn, restartBtn, hintBtn, solveBtn);
 
         return bottomBox;
+    }
+
+    private void openFileWindow(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            filename = file.getPath();
+            tryToOpenFile(filename,false);
+        }
     }
 
     /**
@@ -297,14 +298,23 @@ public class SoltrChessGUI extends Application implements Observer {
         tryToOpenFile(this.filename, false);
     }
 
-    private void newGameModel(String filename){
-        tryToOpenFile(filename, false);
-    }
 
     private void instantiateImages() {
-        dark = new BackgroundImage(new Image(getClass().getResource("resources/dark.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        light = new BackgroundImage(new Image(getClass().getResource("resources/light.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        blue = new BackgroundImage(new Image(getClass().getResource("resources/blue.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
+        dark = new BackgroundImage(new Image(getClass().
+                getResource("resources/dark.png").toExternalForm()),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
+                BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
+        light = new BackgroundImage(new Image(getClass().
+                getResource("resources/light.png").toExternalForm()),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
+                BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
+        blue = new BackgroundImage(new Image(getClass().
+                getResource("resources/blue.png").toExternalForm()),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
+                BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
     }
 
     /**
