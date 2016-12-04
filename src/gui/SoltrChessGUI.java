@@ -253,8 +253,6 @@ public class SoltrChessGUI extends Application implements Observer {
     private void pieceSelected(Button button) {
 
         Background selectedBackground = new Background(blue);
-        button.setBackground(selectedBackground);
-
         //All the pieces on the board
         BoardPiece[][] boardPieces = model.getBoard();
 
@@ -287,8 +285,8 @@ public class SoltrChessGUI extends Application implements Observer {
 
                 if(!currentlySelected.getAbbr().equals(BLANK)) {
                     messageField.setText("Invalid move. Select piece to move.");
+                    displayBoard();
                 }else{
-
                     messageField.setText("Cannot move to blank. " +
                             "Select piece to move.");
                 }
@@ -298,6 +296,7 @@ public class SoltrChessGUI extends Application implements Observer {
         } else {
 
             if(!currentlySelected.getAbbr().equals(BLANK)){
+                button.setBackground(selectedBackground);
                 currentlySelected.selected = true;
                 messageField.setText(currentlySelected.getName() + " selected.");
             }
