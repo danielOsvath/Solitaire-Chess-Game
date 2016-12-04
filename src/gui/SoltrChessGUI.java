@@ -44,10 +44,10 @@ public class SoltrChessGUI extends Application implements Observer {
     private String filename;
     private GridPane grid;
     private Label messageField;
+    private Stage stage;
 
     private BackgroundImage dark;
     private BackgroundImage light;
-    private BackgroundImage white;
     private BackgroundImage blue;
 
 
@@ -56,30 +56,52 @@ public class SoltrChessGUI extends Application implements Observer {
      *
      * @param stage container (window) in which to render the UI
      */
-    public void start( Stage stage ) {
+    public void start( Stage stage ) throws Exception {
 
-        //Making the BorderPane and GridView
-        BorderPane borderPane = new BorderPane();
-        grid = new GridPane();
+        Scene scene = new Scene( this.makeborderPane() );
 
-        generateGrid();
-        messageField = new Label("Loaded " + filename);
+        stage.setTitle( "Solitaire Chess - Nathan & Daniel" );
+        stage.setScene( scene );
+        stage.show();
 
-        instantiateImages();
-
-        borderPane.setCenter(grid);
         displayBoard();
 
-        //TOP Message Field
-        borderPane.setTop(messageField);
+        this.stage = stage;
+    }
 
-        //Bottom Box
+    private BorderPane makeborderPane(){
+
+        //Making the BorderPane
+        BorderPane borderPane = new BorderPane();
+
+        //TOP Message Field
+        borderPane.setTop( this.topMessage() );
+        borderPane.setCenter( this.generateGrid() );
+        borderPane.setBottom( this.bottomControls() );
+
+        return borderPane;
+
+    }
+
+    private HBox topMessage(){
+
+        HBox top = new HBox();
+
+        this.messageField = new Label("Loaded " + filename);
+        top.getChildren().add( messageField );
+
+        return top;
+    }
+
+    private HBox bottomControls(){
+
         HBox bottomBox = new HBox();
+
         bottomBox.setAlignment(Pos.CENTER);
+
         Button newGameBtn = new Button("New Game");
-        newGameBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+        newGameBtn.setOnAction(event -> {
+
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Open Resource File");
                 File file = fileChooser.showOpenDialog(stage);
@@ -87,8 +109,7 @@ public class SoltrChessGUI extends Application implements Observer {
                     filename = file.getPath();
                     newGameModel(filename);
                 }
-            }
-        });
+            });
 
         Button restartBtn = new Button("Restart");
         restartBtn.setOnAction(event -> {
@@ -108,7 +129,6 @@ public class SoltrChessGUI extends Application implements Observer {
         } );
 
         Button solveBtn = new Button("Solve");
-
         solveBtn.setOnAction( event -> {
             if(model.isGoal()){
                 messageField.setText("You won! No moves left.");
@@ -123,25 +143,36 @@ public class SoltrChessGUI extends Application implements Observer {
         } );
 
         bottomBox.getChildren().addAll(newGameBtn, restartBtn, hintBtn, solveBtn);
-        borderPane.setBottom(bottomBox);
 
-        Scene scene = new Scene(borderPane);
-        stage.setTitle("Solitaire Chess - Nathan & Daniel");
-        stage.setScene(scene);
-        stage.show();
-
-        for(BoardPiece[] row : model.getBoard()){
-            for(BoardPiece element : row){
-                System.out.print(element.getAbbr() + " ");
-            }
-            System.out.print("\n");
-        }
+        return bottomBox;
     }
 
     /**
      * Generates the grid.
      */
-    private void generateGrid() {
+    private GridPane generateGrid() {
+
+        grid = new GridPane();
+
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth( 50 );
+        ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPercentWidth( 50 );
+        ColumnConstraints column3 = new ColumnConstraints();
+        column3.setPercentWidth( 50 );
+        ColumnConstraints column4 = new ColumnConstraints();
+        column4.setPercentWidth( 50 );
+        grid.getColumnConstraints().addAll( column1, column2, column3, column4 );
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight( 50 );
+        RowConstraints row2 = new RowConstraints();
+        row2.setPercentHeight( 50 );
+        RowConstraints row3 = new RowConstraints();
+        row3.setPercentHeight( 50 );
+        RowConstraints row4 = new RowConstraints();
+        row4.setPercentHeight( 50 );
+        grid.getRowConstraints().addAll( row1, row2, row3, row4 );
+
         //Center GridView
         for(int i=0;i< SoltrChessModel.DIMENSION;i++) {
             for(int j=0;j<SoltrChessModel.DIMENSION;j++) {
@@ -158,6 +189,7 @@ public class SoltrChessGUI extends Application implements Observer {
             }
         }
 
+        return grid;
     }
 
     private void pieceSelected(Button button) {
@@ -222,8 +254,6 @@ public class SoltrChessGUI extends Application implements Observer {
 
     public void displayBoard(){
 
-        setBoardPattern();
-
         for(int row = 0; row < SoltrChessModel.DIMENSION; row++) {
 
             for(int col = 0; col < SoltrChessModel.DIMENSION; col++) {
@@ -232,7 +262,8 @@ public class SoltrChessGUI extends Application implements Observer {
 
                 if(currentButton != null){
                     String image = this.model.getBoard()[row][col].getName().toLowerCase();
-                    setPieceImage(currentButton,image);
+                    currentButton.setGraphic(getBtnImage(image.toLowerCase()));
+                    currentButton.setBackground(getBtnBackground(row,col));
                 }
 
             }
@@ -274,19 +305,6 @@ public class SoltrChessGUI extends Application implements Observer {
         dark = new BackgroundImage(new Image(getClass().getResource("resources/dark.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         light = new BackgroundImage(new Image(getClass().getResource("resources/light.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         blue = new BackgroundImage(new Image(getClass().getResource("resources/blue.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        white = new BackgroundImage(new Image(getClass().getResource("resources/white.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-    }
-
-    private void setPieceImage(Button button, String name) {
-
-        ImageView img = new ImageView();
-
-//        img.preserveRatioProperty();
-//        img.setScaleX(1);
-//        img.setScaleY(1);
-        button.setGraphic(getBtnImage(name.toLowerCase()));
-//        button.setMinHeight(150);
-//        button.setMinWidth(150);
     }
 
     /**
@@ -307,38 +325,21 @@ public class SoltrChessGUI extends Application implements Observer {
         return view;
     }
 
-    /**
-     *
-     */
-    public void setBoardPattern() {
-        ObservableList<Node> childrens = grid.getChildren();
-        for(int i=0;i<childrens.size();i++)
-        {
-            Node current = childrens.get(i);
-            Button currentBtn = (Button)current;
+    private Background getBtnBackground(int row, int col){
 
-            if(i<4||(i>7&&i<12)) {
-                if (i % 2 == 0) {
-                    Background selectedBackground = new Background(dark);
-                    currentBtn.setBackground(selectedBackground);
+        Background selectedBackground;
 
-                } else {
-                    Background selectedBackground = new Background(light);
-                    currentBtn.setBackground(selectedBackground);
-                }
-            } else{
-                if (i % 2 == 0) {
-                    Background selectedBackground = new Background(light);
-                    currentBtn.setBackground(selectedBackground);
+        col = row + col;
 
-                } else {
-                    Background selectedBackground = new Background(dark);
-                    currentBtn.setBackground(selectedBackground);
-                }
-
-            }
+        if(col % 2 == 0){
+            selectedBackground = new Background(dark);
+        }else{
+            selectedBackground = new Background(light);
         }
+
+        return selectedBackground;
     }
+
 
     /**
      *
@@ -404,7 +405,6 @@ public class SoltrChessGUI extends Application implements Observer {
      */
     @Override
     public void init() throws Exception {
-        System.out.println("init: Initialize and connect to model");
 
         filename = getParameters().getRaw().get(0);
         System.out.println(filename);
@@ -413,6 +413,8 @@ public class SoltrChessGUI extends Application implements Observer {
 
         this.model = new SoltrChessModel(this.filename);
         this.model.addObserver(this);
+
+        instantiateImages();
     }
 
 }
