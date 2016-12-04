@@ -8,7 +8,7 @@ package model;
 import static model.SoltrChessModel.*;
 
 /**
- * Class Purpose
+ * Validates the Desired move
  *
  * @author Daniel Osvath Londono
  * @author Nathan Cassata
