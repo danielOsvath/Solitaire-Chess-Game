@@ -33,6 +33,8 @@ import java.nio.charset.MalformedInputException;
 import java.util.Observable;
 import java.util.Observer;
 
+import static model.SoltrChessModel.BLANK;
+
 /**
  * A miniature chess board
  *
@@ -89,7 +91,7 @@ public class SoltrChessGUI extends Application implements Observer {
      * @param o the observable
      * @param arg the object
      */
-    public void updateMethod(Observable o, Object arg) {
+    private void updateMethod(Observable o, Object arg) {
         displayBoard();
         if(model.isGoal()) messageField.setText("Congratulations, you won!");
     }
@@ -257,56 +259,69 @@ public class SoltrChessGUI extends Application implements Observer {
         BoardPiece[][] boardPieces = model.getBoard();
 
         //coordinates of button on grid view
-        int x = GridPane.getRowIndex(button);
-        int y = GridPane.getColumnIndex(button);
+        int row = GridPane.getRowIndex(button);
+        int col = GridPane.getColumnIndex(button);
 
         //If there is a piece that is already selected it is referenced here
-        BoardPiece pieceAlreadySelected = null;
-
-        //If one exists finds piece already selected
-        for(BoardPiece[]boardRow:boardPieces) {
-            for(BoardPiece piece:boardRow) {
-                if(piece.selected) {
-                    pieceAlreadySelected = piece;
-                }
-            }
-        }
+        BoardPiece alreadySelected = findSelected();
 
         //For Piece currently selected
-        BoardPiece pieceCurrentlySelected = boardPieces[x][y];
-        pieceCurrentlySelected.selected = true;
+        BoardPiece currentlySelected = boardPieces[row][col];
+//        pieceCurrentlySelected.selected = true;
 
-        messageField.setText(pieceCurrentlySelected.getName() + " Selected");
+        if( alreadySelected != null ) {
 
-        if(!(pieceAlreadySelected==null)) {
+            if(model.canMovePieceTo(alreadySelected.x, alreadySelected.y,
+                    row, col)) {
 
-            if(model.canMovePieceTo(pieceAlreadySelected.x, pieceAlreadySelected.y, x,y)) {
-                model.movePieceTo(pieceAlreadySelected.x, pieceAlreadySelected.y, x,y);
-                pieceAlreadySelected.selected = false;
-                messageField.setText(pieceAlreadySelected.getName()+" moved to "+ "(" + pieceCurrentlySelected.x+
-                        ", " + pieceCurrentlySelected.y + ") terminating " + pieceCurrentlySelected.getName());
-                if(model.isGoal())
-                {
-                    messageField.setText("You won! No moves left.");
-                }
+                alreadySelected.selected = false;
+
+                model.movePieceTo(alreadySelected.x, alreadySelected.y, row, col);
+
+                messageField.setText(alreadySelected.getName() +
+                        " moved to " + "(" + currentlySelected.x+
+                        ", " + currentlySelected.y + ") taking "
+                        + currentlySelected.getName() + ".");
+
             } else { //If piece cannot move to
 
-                pieceAlreadySelected.selected = false;
-                pieceCurrentlySelected.selected = false;
-                messageField.setText("Invalid Move.");
-                displayBoard();
+                if(!currentlySelected.getAbbr().equals(BLANK)) {
+                    messageField.setText("Invalid move. Select piece to move.");
+                }else{
+
+                    messageField.setText("Cannot move to blank. " +
+                            "Select piece to move.");
+                }
+
+                currentlySelected.selected = false;
             }
         } else {
-            BoardPiece pieceSelectedObj = boardPieces[x][y];
-            pieceSelectedObj.selected = true;
+
+            if(!currentlySelected.getAbbr().equals(BLANK)){
+                currentlySelected.selected = true;
+                messageField.setText(currentlySelected.getName() + " selected.");
+            }
         }
 
+    }
+
+    private BoardPiece findSelected(){
+        //If one exists finds piece already selected
+        for(BoardPiece[] boardRow : model.getBoard()) {
+            for(BoardPiece piece : boardRow) {
+                if(piece.selected) {
+                    return piece;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
      * Displays the board using the model
      */
-    public void displayBoard(){
+    private void displayBoard(){
 
         for(int row = 0; row < SoltrChessModel.DIMENSION; row++) {
 
