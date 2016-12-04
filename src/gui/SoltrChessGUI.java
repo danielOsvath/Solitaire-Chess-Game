@@ -16,14 +16,17 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.event.*;
 import model.BoardPiece;
 import model.SoltrChessModel;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -44,6 +47,18 @@ public class SoltrChessGUI extends Application implements Observer {
     private Button hintBtn;
     private Button solveBtn;
 
+    //PiecesImages
+    private Image bishop;
+    private Image king;
+    private Image knight;
+    private Image pawn;
+    private Image queen;
+    private Image rook;
+    private BackgroundImage dark;
+    private BackgroundImage light;
+    private BackgroundImage white;
+    private BackgroundImage blue;
+
 
     /**
      * Construct the layout for the game.
@@ -57,9 +72,9 @@ public class SoltrChessGUI extends Application implements Observer {
         grid = new GridPane();
 
         generateGrid();
-
         messageField = new Label("Select a Piece");
 
+        instantiateImages();
 
         borderPane.setCenter(grid);
         displayBoard();
@@ -71,17 +86,49 @@ public class SoltrChessGUI extends Application implements Observer {
         HBox bottomBox = new HBox();
         bottomBox.setAlignment(Pos.CENTER);
         newGameBtn = new Button("New Game");
+        newGameBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open Resource File");
+                File file = fileChooser.showOpenDialog(stage);
+                if (file != null) {
+                    filename = file.getPath();
+                    restartModel();
+                }
+            }
+        });
         restartBtn = new Button("Restart");
         restartBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                model = new SoltrChessModel(filename);
-//                generateGrid();
-                displayBoard();
+                restartModel();
             }
         });
         hintBtn = new Button("Hint");
+        hintBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(model.isGoal()){
+                    messageField.setText("You won! No moves left.");
+                } else {
+                    model.hint();
+                    messageField.setText("Hint");
+                }
+            }
+        });
         solveBtn = new Button("Solve");
+        solveBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(model.isGoal()){
+                    messageField.setText("You won! No moves left.");
+                } else {
+                    messageField.setText("Solving Puzzle");
+                    model.solve();
+                }
+            }
+        });
         bottomBox.getChildren().addAll(newGameBtn, restartBtn, hintBtn, solveBtn);
         borderPane.setBottom(bottomBox);
 
@@ -115,8 +162,8 @@ public class SoltrChessGUI extends Application implements Observer {
                         pieceSelected(button);
                     }
                 });
-                button.setMinHeight(100);
-                button.setMinWidth(100);
+                button.setMinHeight(150);
+                button.setMinWidth(150);
                 grid.add(button,i,j);
             }
         }
@@ -125,6 +172,10 @@ public class SoltrChessGUI extends Application implements Observer {
 
     private void pieceSelected(Button button)
     {
+
+        Background selectedBackground = new Background(blue);
+        button.setBackground(selectedBackground);
+
         //All the pieces on the board
         BoardPiece[][] boardPieces = model.getBoard();
 
@@ -186,6 +237,13 @@ public class SoltrChessGUI extends Application implements Observer {
 
         BoardPiece[][] boardPieces = model.getBoard();
 
+        for(BoardPiece[] row : model.getBoard()){
+            for(BoardPiece element : row){
+                System.out.print(element.getAbbr() + " ");
+            }
+            System.out.print("\n");
+        }
+
         for(int i=0;i<SoltrChessModel.DIMENSION;i++) {
 
             for(int j=0;j<SoltrChessModel.DIMENSION;j++) {
@@ -194,7 +252,9 @@ public class SoltrChessGUI extends Application implements Observer {
                 for (Node node : childrens) {
                     if(grid.getRowIndex(node) == i && grid.getColumnIndex(node) == j) {
                         Button result = (Button)node;
-                        result.setText(boardPieces[i][j].getName());
+//                        result.setText(boardPieces[i][j].getName());
+
+                        setPieceImage(result, boardPieces[i][j].getName());
 
                         if(boardPieces[i][j].getName().equals("Blank"))
                         {
@@ -208,6 +268,51 @@ public class SoltrChessGUI extends Application implements Observer {
         }
     }
 
+
+    private void restartModel(){
+        this.model = new SoltrChessModel(this.filename);
+        this.model.addObserver(this);
+        displayBoard();
+    }
+
+    private void instantiateImages() {
+        bishop = new Image(getClass().getResourceAsStream("resources/bishop.png"));
+        king = new Image(getClass().getResourceAsStream("resources/king.png"));
+        knight = new Image(getClass().getResourceAsStream("resources/knight.png"));
+        pawn = new Image(getClass().getResourceAsStream("resources/pawn.png"));
+        queen = new Image(getClass().getResourceAsStream("resources/queen.png"));
+        rook = new Image(getClass().getResourceAsStream("resources/rook.png"));
+        dark = new BackgroundImage(new Image(getClass().getResource("resources/dark.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        light = new BackgroundImage(new Image(getClass().getResource("resources/light.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        blue = new BackgroundImage(new Image(getClass().getResource("resources/blue.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        white = new BackgroundImage(new Image(getClass().getResource("resources/white.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+    }
+
+    private void setPieceImage(Button button, String name)
+    {
+        ImageView img = new ImageView();
+        if(name.equals("Bishop")) {
+            img = new ImageView(bishop);
+        } else if(name.equals("King")) {
+            img = new ImageView(king);
+        } else if(name.equals("Knight")) {
+            img = new ImageView(knight);
+        } else if(name.equals("Pawn")) {
+            img = new ImageView(pawn);
+        } else if(name.equals("Queen")) {
+            img = new ImageView(queen);
+        } else if(name.equals("Rook")) {
+            img = new ImageView(rook);
+        }
+
+        img.preserveRatioProperty();
+        img.setScaleX(1);
+        img.setScaleY(1);
+        button.setGraphic(img);
+        button.setMinHeight(150);
+        button.setMinWidth(150);
+    }
+
     /**
      *
      * @param observable
@@ -217,6 +322,7 @@ public class SoltrChessGUI extends Application implements Observer {
     public void update(Observable observable, Object o) {
         System.out.println("Update called");
         displayBoard();
+
     }
 
     /**
@@ -234,4 +340,5 @@ public class SoltrChessGUI extends Application implements Observer {
         this.model = new SoltrChessModel(this.filename);
         this.model.addObserver(this);
     }
+
 }
