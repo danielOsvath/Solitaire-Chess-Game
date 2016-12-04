@@ -225,6 +225,7 @@ public class SoltrChessGUI extends Application implements Observer {
                 pieceAlreadySelected.selected = false;
                 pieceCurrentlySelected.selected = false;
                 messageField.setText("Invalid Move.");
+                displayBoard();
             }
         } else {
             BoardPiece pieceSelectedObj = boardPieces[x][y];
@@ -234,6 +235,8 @@ public class SoltrChessGUI extends Application implements Observer {
     }
 
     public void displayBoard(){
+
+        setBoardPattern();
 
         BoardPiece[][] boardPieces = model.getBoard();
 
@@ -311,6 +314,36 @@ public class SoltrChessGUI extends Application implements Observer {
         button.setGraphic(img);
         button.setMinHeight(150);
         button.setMinWidth(150);
+    }
+
+    public void setBoardPattern() {
+        ObservableList<Node> childrens = grid.getChildren();
+        for(int i=0;i<childrens.size();i++)
+        {
+            Node current = childrens.get(i);
+            Button currentBtn = (Button)current;
+
+            if(i<4||(i>7&&i<12)) {
+                if (i % 2 == 0) {
+                    Background selectedBackground = new Background(dark);
+                    currentBtn.setBackground(selectedBackground);
+
+                } else {
+                    Background selectedBackground = new Background(light);
+                    currentBtn.setBackground(selectedBackground);
+                }
+            } else{
+                if (i % 2 == 0) {
+                    Background selectedBackground = new Background(light);
+                    currentBtn.setBackground(selectedBackground);
+
+                } else {
+                    Background selectedBackground = new Background(dark);
+                    currentBtn.setBackground(selectedBackground);
+                }
+
+            }
+        }
     }
 
     /**
