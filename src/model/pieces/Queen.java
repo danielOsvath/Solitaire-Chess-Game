@@ -10,9 +10,9 @@ import java.util.Arrays;
 public class Queen extends BoardPiece {
 
     /**
-     *
-     * @param x
-     * @param y
+     * Creates a new Queen object with the supplied coordinates
+     * @param x the x coordinate
+     * @param y the y coordinate
      */
     public Queen(int x, int y) {
         name = "Queen";
@@ -24,8 +24,8 @@ public class Queen extends BoardPiece {
     }
 
     /**
-     *
-     * @return
+     * Creates a clone of the Queen object
+     * @return a clone
      */
     public Queen clone(){
         return new Queen(this.x,this.y);

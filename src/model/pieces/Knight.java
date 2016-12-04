@@ -13,9 +13,9 @@ import java.util.Arrays;
 public class Knight extends BoardPiece {
 
     /**
-     *
-     * @param x
-     * @param y
+     * Creates a King object with the coordinates
+     * @param x x value
+     * @param y y value
      */
     public Knight(int x, int y) {
 
@@ -28,8 +28,8 @@ public class Knight extends BoardPiece {
     }
 
     /**
-     *
-     * @return
+     * Creates a clone of the current King object
+     * @return a clone
      */
     public Knight clone(){
         return new Knight(this.x,this.y);

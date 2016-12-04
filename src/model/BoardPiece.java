@@ -67,11 +67,11 @@ public abstract class BoardPiece {
     }
 
     /**
-     *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
+     * Determines what type of move is trying to be made
+     * @param fromX the current x value
+     * @param fromY the current y value
+     * @param toX the desired x value
+     * @param toY the desired y value
      * @return
      */
     public String typeOfMove(int fromX, int fromY, int toX, int toY) {
@@ -100,9 +100,8 @@ public abstract class BoardPiece {
 
     /**
      * Move board piece to new location
-     *
-     * @param toX
-     * @param toY
+     * @param toX move to this x value
+     * @param toY move to this y value
      */
     public void moveTo(int toX, int toY){
         this.x = toX;
@@ -116,5 +115,9 @@ public abstract class BoardPiece {
         return this.name + " at (" + x + ", " + y + ")";
     }
 
+    /**
+     * Makes a clone of the board piece
+     * @return the clone
+     */
     public abstract BoardPiece clone();
 }

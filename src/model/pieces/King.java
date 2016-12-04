@@ -13,8 +13,9 @@ import java.util.Arrays;
 public class King extends BoardPiece {
 
     /**
-     * @param x
-     * @param y
+     * Creates King with the coordinates
+     * @param x the x coordinate
+     * @param y the y coordinate
      */
     public King(int x, int y) {
         name = "King";
@@ -26,9 +27,10 @@ public class King extends BoardPiece {
     }
 
     /**
+     * Checks if the current piece can moved to desired coordinates
      * @param toX x value
      * @param toY y value
-     * @return
+     * @return true if it can move to that location, false if not
      */
     @Override
     public boolean canMoveTo(int toX, int toY) {
@@ -42,8 +44,8 @@ public class King extends BoardPiece {
     }
 
     /**
-     *
-     * @return
+     * Creates a clone of the current King object
+     * @return the clone
      */
     public King clone(){
         return new King(this.x,this.y);

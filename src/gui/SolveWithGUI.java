@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Class Purpose
+ * Solves the board with the GUI
  *
  * @author Daniel Osvath Londono
  * @author Nathan Cassata
@@ -21,19 +21,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class SolveWithGUI extends Thread {
 
-    /* */
+    //Current Model
     private SoltrChessModel model;
 
     /**
-     *
-     * @param model
+     * Constructor
+     * @param model the model to solve
      */
     public SolveWithGUI(SoltrChessModel model){
         this.model = model;
     }
 
     /**
-     *
+     * Run the solve
      */
     public void run(){
 

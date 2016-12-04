@@ -16,9 +16,9 @@ import java.util.Arrays;
 public class Bishop extends BoardPiece {
 
     /**
-     *
-     * @param x
-     * @param y
+     * Initalize the Bishop with coordinates
+     * @param x x coordinate
+     * @param y y coordinate
      */
     public Bishop(int x, int y) {
         name = "Bishop";
@@ -30,8 +30,8 @@ public class Bishop extends BoardPiece {
     }
 
     /**
-     *
-     * @return
+     * Makes a clone of the Bishop
+     * @return a clone
      */
     public Bishop clone(){
         return new Bishop(this.x,this.y);

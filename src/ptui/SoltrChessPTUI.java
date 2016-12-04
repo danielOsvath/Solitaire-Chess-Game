@@ -22,12 +22,14 @@ import java.util.Scanner;
  */
 public class SoltrChessPTUI implements Observer {
 
+    //The Model
     private SoltrChessModel model;
+    //The original file
     private String originalfile;
 
     /**
-     *
-     * @param fileName
+     * The PTUI constructor
+     * @param fileName the file to use
      */
     public SoltrChessPTUI( String fileName ) {
         originalfile = fileName;
@@ -45,7 +47,7 @@ public class SoltrChessPTUI implements Observer {
     }
 
     /**
-     *
+     * Displays the board in text format
      */
     private void displayBoard() {
         for(BoardPiece[] row : model.getBoard()){
@@ -58,7 +60,7 @@ public class SoltrChessPTUI implements Observer {
 
     // CONTROLLER
     /**
-     *
+     * The game run. All the game commands used here
      */
     public void run() {
         Scanner in = new Scanner(System.in);
@@ -125,8 +127,8 @@ public class SoltrChessPTUI implements Observer {
     }
 
     /**
-     *
-     * @param filename
+     * Attempts to open the desired file
+     * @param filename the supplied file
      */
     private void tryToOpenFile(String filename, boolean initial){
         try {
@@ -141,8 +143,8 @@ public class SoltrChessPTUI implements Observer {
     }
 
     /**
-     *
-     * @param in
+     * Asks user for move
+     * @param in the scanner
      */
     private void promptForMove(Scanner in){
 
@@ -164,16 +166,16 @@ public class SoltrChessPTUI implements Observer {
     }
 
     /**
-     *
+     * Checks to see if the board is a goal
      */
     private void checkGoal(){
         if(model.isGoal()) System.out.println("You won. Congratulations!");
     }
 
     /**
-     *
-     * @param in
-     * @return
+     * Asks for Source X
+     * @param in scanner
+     * @return x location
      */
     private int promptForSourceX(Scanner in){
         System.out.print("Source Row? ");
@@ -181,9 +183,9 @@ public class SoltrChessPTUI implements Observer {
     }
 
     /**
-     *
-     * @param in
-     * @return
+     * Asks for source Y
+     * @param in scanner
+     * @return y location
      */
     private int promptForSourceY(Scanner in){
         System.out.print("Source Col? ");
@@ -191,9 +193,9 @@ public class SoltrChessPTUI implements Observer {
     }
 
     /**
-     *
-     * @param in
-     * @return
+     * Asks for the X destination
+     * @param in scanner
+     * @return x location
      */
     private int promptForDestX(Scanner in){
         System.out.print("Destination Row? ");
@@ -201,9 +203,9 @@ public class SoltrChessPTUI implements Observer {
     }
 
     /**
-     *
-     * @param in
-     * @return
+     * Asks for the Y location
+     * @param in the scanner
+     * @return y location
      */
     private int promptForDestY(Scanner in){
         System.out.print("Destination Col? ");
@@ -238,10 +240,12 @@ public class SoltrChessPTUI implements Observer {
         }
     }
 
-    //test making moves with figures, playing some puzzles.
 
-    // VIEW
-
+    /**
+     * Update the board
+     * @param observable the observable
+     * @param o the object
+     */
     @Override
     public void update(Observable observable, Object o) {
         displayBoard(); //update the board.

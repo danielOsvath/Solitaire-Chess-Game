@@ -10,9 +10,9 @@ import java.util.Arrays;
 public class Pawn extends BoardPiece {
 
     /**
-     *
-     * @param x
-     * @param y
+     * Create a Pawn Object with the coordinates
+     * @param x x coordinate
+     * @param y y coordinate
      */
     public Pawn(int x, int y) {
         name = "Pawn";
@@ -27,7 +27,7 @@ public class Pawn extends BoardPiece {
     }
 
     /**
-     *
+     * Checks if the current Pawn object can move to the supplied coordinates
      * @param toX x value
      * @param toY y value
      * @return
@@ -43,8 +43,8 @@ public class Pawn extends BoardPiece {
     }
 
     /**
-     *
-     * @return
+     * Creates a Clone of the current Pawn Object
+     * @return the clone
      */
     public Pawn clone(){
         return new Pawn(this.x,this.y);

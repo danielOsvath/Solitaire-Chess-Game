@@ -8,7 +8,11 @@ import java.util.Arrays;
  */
 public class Rook extends BoardPiece {
 
-
+    /**
+     * Creates a Rook object with the supplied coordinates
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
     public Rook(int x, int y) {
         name = "Rook";
         abbr = "R";
@@ -19,8 +23,8 @@ public class Rook extends BoardPiece {
     }
 
     /**
-     *
-     * @return
+     * Creates a clone of the Rook object
+     * @return a clone
      */
     public Rook clone(){
         return new Rook(this.x,this.y);

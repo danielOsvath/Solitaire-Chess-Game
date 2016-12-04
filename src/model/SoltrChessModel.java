@@ -46,6 +46,7 @@ public class SoltrChessModel extends Observable {
 
     /**
      * Construct a SoltrChessModel
+     * @param filename The file being supplied
      */
     public SoltrChessModel(String filename) throws FileNotFoundException, MalformedInputException{
 
@@ -56,12 +57,11 @@ public class SoltrChessModel extends Observable {
 
         Scanner sc = new Scanner(file);
         readBoardFromfile(sc);
-
     }
 
     /**
-     *
-     * @param sc
+     * Creates a board from the file
+     * @param sc the scanner to use with the file already in it.
      */
     private void readBoardFromfile(Scanner sc) throws MalformedInputException{
 
@@ -88,10 +88,10 @@ public class SoltrChessModel extends Observable {
 
 
     /**
-     *
-     * @param x
-     * @param y
-     * @param type
+     * Creates the BoardPiece with the specific type and location
+     * @param x x value
+     * @param y y value
+     * @param type type of BoardPiece
      * @return
      */
     private BoardPiece getPiece(int x, int y, String type){
@@ -107,12 +107,12 @@ public class SoltrChessModel extends Observable {
     }
 
     /**
-     *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
-     * @return
+     * Detemines if a Board Piece can make desired move
+     * @param fromX current x value
+     * @param fromY current y value
+     * @param toX desired x value
+     * @param toY desired y value
+     * @return true if move can be made, false otherwise
      */
     public boolean canMovePieceTo(int fromX, int fromY, int toX, int toY){
 
@@ -125,10 +125,10 @@ public class SoltrChessModel extends Observable {
      * Precondition: VALID MOVE.
      * Post Condition: Piece moved to the new location replacing other piece.
      *
-     * @param pieceX
-     * @param pieceY
-     * @param toX
-     * @param toY
+     * @param pieceX curennt piece's X value
+     * @param pieceY current piece's Y value
+     * @param toX desired X value
+     * @param toY desired Y value
      */
     public void movePieceTo(int pieceX, int pieceY, int toX, int toY){
 
@@ -144,7 +144,10 @@ public class SoltrChessModel extends Observable {
         notifyObservers();
     }
 
-    //temporary isGoal func -> move to configuration later.
+    /**
+     * Determines if the current board is the goal
+     * @return true if is goal, false if not.
+     */
     public boolean isGoal(){
 
         int countPiece = 0;
@@ -163,6 +166,7 @@ public class SoltrChessModel extends Observable {
     /**
      * Solve the puzzle, update the model along the way.
      * Works fo PTUI.
+     * @return true if solved, false if not solvable
      */
     public boolean solve(){
 
@@ -203,7 +207,8 @@ public class SoltrChessModel extends Observable {
     }
 
     /**
-     * Needed for GUI
+     * Generates a list of steps to solve
+     * @return Returns a list of steps to solve the board
      */
     public List<Configuration> getSolveSteps(){
 
@@ -212,7 +217,8 @@ public class SoltrChessModel extends Observable {
     }
 
     /**
-     *
+     * Supplies the board with a hint
+     * @return true if the hint is allowed, false if board is currently incorrect
      */
     public boolean hint(){
 
@@ -245,10 +251,10 @@ public class SoltrChessModel extends Observable {
     }
 
     /**
-     *
-     * @param one
-     * @param two
-     * @return
+     * Determines if the boards are equal
+     * @param one board one
+     * @param two board two
+     * @return true if boards equal, false otherwise
      */
     private boolean equalBoards(BoardPiece[][] one, BoardPiece[][] two){
 
@@ -269,8 +275,8 @@ public class SoltrChessModel extends Observable {
     }
 
     /**
-     *
-     * @return
+     * Gets the board
+     * @return the board
      */
     public BoardPiece[][] getBoard() {
         return board;

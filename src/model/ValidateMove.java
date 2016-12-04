@@ -20,11 +20,12 @@ public class ValidateMove {
      * Determine whether a piece can be moved to another location,
      * capturing the figure at the location.
      *
-     * @param pieceX
-     * @param pieceY
-     * @param toX
-     * @param toY
-     * @return
+     * @param myboard the current board
+     * @param pieceX current piece X location
+     * @param pieceY current piece Y location
+     * @param toX desired X location
+     * @param toY desired Y location
+     * @return true if move can be made, false if cannot be made
      */
     public static boolean canMovePieceTo(BoardPiece[][] myboard, int pieceX,
                                          int pieceY, int toX, int toY){
@@ -54,11 +55,11 @@ public class ValidateMove {
      *
      * @param myboard board to check for,
      *                as parameter so SoltrChessConfig can use.
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
-     * @return
+     * @param fromX current X coordanite
+     * @param fromY current Y coordinate
+     * @param toX desired X coordinate
+     * @param toY desired Y coordinate
+     * @return if figure in path true, if not false
      */
     public static boolean figureInPath(BoardPiece[][] myboard, int fromX,
                                        int fromY, int toX, int toY){
@@ -84,10 +85,10 @@ public class ValidateMove {
     /**
      * Determine whether there is a piece between two coordinates vertically.
      *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
+     * @param fromX current X
+     * @param fromY current Y
+     * @param toX desired X
+     * @param toY desired Y
      * @return
      */
     private static boolean checkVerticalPath(BoardPiece[][] myboard, int fromX,
@@ -117,10 +118,10 @@ public class ValidateMove {
     /**
      * Determine whether there is a piece between two coordinates horizontally.
      *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
+     * @param fromX current X
+     * @param fromY current Y
+     * @param toX desired X
+     * @param toY desired Y
      * @return
      */
     private static boolean checkHorizontalPath(BoardPiece[][] myboard, int fromX,
@@ -150,10 +151,10 @@ public class ValidateMove {
     /**
      * Determine whether there is a figure in the path between the coordinates.
      *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
+     * @param fromX current X
+     * @param fromY current Y
+     * @param toX desired X
+     * @param toY desired Y
      * @return true if there is a piece, else false.
      */
     private static boolean checkDiagPath(BoardPiece[][] myboard, int fromX,
@@ -220,8 +221,9 @@ public class ValidateMove {
     /**
      * Check if there is a piece at x,y of the board.
      *
-     * @param atX
-     * @param atY
+     * @param myboard current board
+     * @param atX x coordinate
+     * @param atY y coordinate
      * @return
      */
     private static boolean piecePresent(BoardPiece[][] myboard, int atX, int atY){

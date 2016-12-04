@@ -14,9 +14,9 @@ import model.BoardPiece;
 public class Blank extends BoardPiece {
 
     /**
-     *
-     * @param x
-     * @param y
+     * Creates a Blank Piece
+     * @param x the X coordinate
+     * @param y the Y coordinate
      */
     public Blank(int x, int y) {
         name = "Blank";
@@ -28,7 +28,7 @@ public class Blank extends BoardPiece {
 
 
     /**
-     *
+     * Checks if the current piece can move to
      * @param x x value
      * @param y y value
      * @return
@@ -39,8 +39,8 @@ public class Blank extends BoardPiece {
     }
 
     /**
-     *
-     * @return
+     * Creates a clone of the blank object with coordinates
+     * @return a clone
      */
     public Blank clone(){
         return new Blank(this.x,this.y);

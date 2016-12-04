@@ -59,8 +59,8 @@ public class SoltrChessConfig implements Configuration{
     }
 
     /**
-     *
-     * @return
+     * Finds all possible moves for the board
+     * @return A collection of configurations
      */
     @Override
     public Collection<Configuration> getSuccessors() {
@@ -91,8 +91,8 @@ public class SoltrChessConfig implements Configuration{
     }
 
     /**
-     *
-     * @return
+     * We use another method for pruning
+     * @return true
      */
     @Override
     public boolean isValid() {
@@ -100,11 +100,11 @@ public class SoltrChessConfig implements Configuration{
     }
 
     /**
-     *
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
+     * The Piece makes a move on the board
+     * @param fromX the current X value
+     * @param fromY the current Y value
+     * @param toX the X value the piece is being moved to
+     * @param toY the Y value the piece is being moved to
      */
     private void makeMove(int fromX, int fromY, int toX, int toY){
 
@@ -146,8 +146,8 @@ public class SoltrChessConfig implements Configuration{
     }
 
     /**
-     *
-     * @return
+     * Determines if the configuration is a goal
+     * @return true if the board is the goal, false if not
      */
     @Override
     public boolean isGoal() {
@@ -165,13 +165,17 @@ public class SoltrChessConfig implements Configuration{
         return (countPiece == 1);
     }
 
+    /**
+     * Returns the current board
+     * @return the current board
+     */
     @Override
     public BoardPiece[][] getBoard(){
         return config;
     }
 
     /**
-     *
+     * A text print out of the board
      */
     @Override
     public void printBoard(){
