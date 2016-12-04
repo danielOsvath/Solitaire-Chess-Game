@@ -101,25 +101,24 @@ public class SoltrChessGUI extends Application implements Observer {
                 }
             }
         });
+
         restartBtn = new Button("Restart");
-        restartBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                restartModel();
-            }
+        restartBtn.setOnAction(event -> {
+            tryToOpenFile(filename,false);
+            messageField.setText("Game loaded: " + filename);
+//            initializeView();
         });
+
         hintBtn = new Button("Hint");
-        hintBtn.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if(model.isGoal()){
-                    messageField.setText("You won! No moves left.");
-                } else {
-                    model.hint();
-                    messageField.setText("Hint");
-                }
+        hintBtn.setOnAction( event -> {
+            if(model.isGoal()){
+                messageField.setText("You won! No moves left.");
+            }else {
+                if(!this.model.hint())
+                    messageField.setText("No solution possible from current state.");
             }
-        });
+        } );
+
         solveBtn = new Button("Solve");
 
         solveBtn.setOnAction( event -> {
