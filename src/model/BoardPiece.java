@@ -3,12 +3,8 @@
  */
 package model;
 
-import model.pieces.*;
-
 import java.util.List;
 
-//import for constants
-import static model.SoltrChessModel.*;
 
 
 /**
