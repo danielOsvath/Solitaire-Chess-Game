@@ -45,13 +45,6 @@ public class SoltrChessGUI extends Application implements Observer {
     private GridPane grid;
     private Label messageField;
 
-    //PiecesImages
-    private Image bishop;
-    private Image king;
-    private Image knight;
-    private Image pawn;
-    private Image queen;
-    private Image rook;
     private BackgroundImage dark;
     private BackgroundImage light;
     private BackgroundImage white;
@@ -176,8 +169,8 @@ public class SoltrChessGUI extends Application implements Observer {
         BoardPiece[][] boardPieces = model.getBoard();
 
         //coordinates of button on grid view
-        int y = grid.getColumnIndex(button);
-        int x = grid.getRowIndex(button);
+        int x = GridPane.getRowIndex(button);
+        int y = GridPane.getColumnIndex(button);
 
         //If there is a piece that is already selected it is referenced here
         BoardPiece pieceAlreadySelected = null;
@@ -246,16 +239,12 @@ public class SoltrChessGUI extends Application implements Observer {
                 ObservableList<Node> childrens = grid.getChildren();
                 //Matches coordinates of grid to items on GridPane
                 for (Node node : childrens) {
-                    if(grid.getRowIndex(node) == i && grid.getColumnIndex(node) == j) {
+                    if(GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j) {
                         Button result = (Button)node;
 //                        result.setText(boardPieces[i][j].getName());
 
                         setPieceImage(result, boardPieces[i][j].getName());
 
-                        if(boardPieces[i][j].getName().equals("Blank"))
-                        {
-                            result.setText("");
-                        }
                         break;
                     }
                 }
@@ -274,12 +263,6 @@ public class SoltrChessGUI extends Application implements Observer {
     }
 
     private void instantiateImages() {
-        bishop = new Image(getClass().getResourceAsStream("resources/bishop.png"));
-        king = new Image(getClass().getResourceAsStream("resources/king.png"));
-        knight = new Image(getClass().getResourceAsStream("resources/knight.png"));
-        pawn = new Image(getClass().getResourceAsStream("resources/pawn.png"));
-        queen = new Image(getClass().getResourceAsStream("resources/queen.png"));
-        rook = new Image(getClass().getResourceAsStream("resources/rook.png"));
         dark = new BackgroundImage(new Image(getClass().getResource("resources/dark.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         light = new BackgroundImage(new Image(getClass().getResource("resources/light.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         blue = new BackgroundImage(new Image(getClass().getResource("resources/blue.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
@@ -287,29 +270,38 @@ public class SoltrChessGUI extends Application implements Observer {
     }
 
     private void setPieceImage(Button button, String name) {
-        ImageView img = new ImageView();
-        if(name.equals("Bishop")) {
-            img = new ImageView(bishop);
-        } else if(name.equals("King")) {
-            img = new ImageView(king);
-        } else if(name.equals("Knight")) {
-            img = new ImageView(knight);
-        } else if(name.equals("Pawn")) {
-            img = new ImageView(pawn);
-        } else if(name.equals("Queen")) {
-            img = new ImageView(queen);
-        } else if(name.equals("Rook")) {
-            img = new ImageView(rook);
-        }
 
-        img.preserveRatioProperty();
-        img.setScaleX(1);
-        img.setScaleY(1);
-        button.setGraphic(img);
-        button.setMinHeight(150);
-        button.setMinWidth(150);
+        ImageView img = new ImageView();
+
+//        img.preserveRatioProperty();
+//        img.setScaleX(1);
+//        img.setScaleY(1);
+        button.setGraphic(getBtnImage(name.toLowerCase()));
+//        button.setMinHeight(150);
+//        button.setMinWidth(150);
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
+    private ImageView getBtnImage(String  name){
+
+        if(name.equals("blank")) return null;
+        Image img1 = new Image( getClass()
+                .getResourceAsStream( "resources/" + name + ".png" ) );
+
+        ImageView view = new ImageView( img1 );
+        view.setFitHeight( 100 );
+        view.setFitWidth( 100 );
+
+        return view;
+    }
+
+    /**
+     *
+     */
     public void setBoardPattern() {
         ObservableList<Node> childrens = grid.getChildren();
         for(int i=0;i<childrens.size();i++)
