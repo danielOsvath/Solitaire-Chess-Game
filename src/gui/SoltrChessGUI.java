@@ -280,13 +280,14 @@ public class SoltrChessGUI extends Application implements Observer {
 
                 if(!currentlySelected.getAbbr().equals(BLANK)) {
                     messageField.setText("Invalid move. Select piece to move.");
-                    displayBoard();
                 }else{
                     messageField.setText("Cannot move to blank. " +
                             "Select piece to move.");
                 }
 
-                currentlySelected.selected = false;
+                displayBoard();
+                alreadySelected.selected = false;
+//                currentlySelected.selected = false;
             }
         } else {
 
