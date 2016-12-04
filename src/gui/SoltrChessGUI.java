@@ -224,33 +224,39 @@ public class SoltrChessGUI extends Application implements Observer {
 
         setBoardPattern();
 
-        BoardPiece[][] boardPieces = model.getBoard();
+        for(int row = 0; row < SoltrChessModel.DIMENSION; row++) {
 
-        for(BoardPiece[] row : model.getBoard()){
-            for(BoardPiece element : row){
-                System.out.print(element.getAbbr() + " ");
-            }
-            System.out.print("\n");
-        }
+            for(int col = 0; col < SoltrChessModel.DIMENSION; col++) {
 
-        for(int i=0;i<SoltrChessModel.DIMENSION;i++) {
+                Button currentButton = getButtonAt(row,col);
 
-            for(int j=0;j<SoltrChessModel.DIMENSION;j++) {
-                ObservableList<Node> childrens = grid.getChildren();
-                //Matches coordinates of grid to items on GridPane
-                for (Node node : childrens) {
-                    if(GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j) {
-                        Button result = (Button)node;
-//                        result.setText(boardPieces[i][j].getName());
-
-                        setPieceImage(result, boardPieces[i][j].getName());
-
-                        break;
-                    }
+                if(currentButton != null){
+                    String image = this.model.getBoard()[row][col].getName().toLowerCase();
+                    setPieceImage(currentButton,image);
                 }
 
             }
         }
+    }
+
+    /**
+     *
+     * @param row
+     * @param col
+     * @return
+     */
+    private Button getButtonAt(int row, int col){
+
+        ObservableList<Node> buttons = grid.getChildren();
+
+        for (Node button : buttons){
+            if(GridPane.getRowIndex(button) == row &&
+                    GridPane.getColumnIndex(button) == col){
+                return (Button) button;
+            }
+        }
+
+        return null;
     }
 
 
