@@ -1,4 +1,4 @@
-/**
+/*
  * Part of SoltrChessLayout project.
  * Created 10 2015
  *
@@ -54,6 +54,7 @@ public class SoltrChessGUI extends Application implements Observer {
 
     /**
      * Initializes the GUI
+     *
      * @throws Exception
      */
     @Override
@@ -231,12 +232,7 @@ public class SoltrChessGUI extends Application implements Observer {
         for(int i=0;i< SoltrChessModel.DIMENSION;i++) {
             for(int j=0;j<SoltrChessModel.DIMENSION;j++) {
                 Button button = new Button();
-                button.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        pieceSelected(button);
-                    }
-                });
+                button.setOnAction(event -> pieceSelected(button));
                 button.setMinHeight(150);
                 button.setMinWidth(150);
                 grid.add(button,i,j);
@@ -265,7 +261,6 @@ public class SoltrChessGUI extends Application implements Observer {
 
         //For Piece currently selected
         BoardPiece currentlySelected = boardPieces[row][col];
-//        pieceCurrentlySelected.selected = true;
 
         if( alreadySelected != null ) {
 
