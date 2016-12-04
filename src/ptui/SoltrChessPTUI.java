@@ -225,7 +225,7 @@ public class SoltrChessPTUI implements Observer {
             try{
                 int integer = Integer.parseInt(x);
 
-                if(integer >= SoltrChessModel.DIMENSION){
+                if(integer >= SoltrChessModel.DIMENSION || integer < 0){
                     System.out.print("Please enter an integer from 0 - "
                             + Integer.toString(SoltrChessModel.DIMENSION-1)
                             + ": ");
