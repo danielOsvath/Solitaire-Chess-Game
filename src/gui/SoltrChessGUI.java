@@ -237,6 +237,8 @@ public class SoltrChessGUI extends Application implements Observer {
 
             }
         }
+
+        if(model.solveStep != 0) messageField.setText("Step: " + model.solveStep);
     }
 
     /**
