@@ -111,6 +111,7 @@ public class SoltrChessPTUI implements Observer {
                 case "quit":
                     System.out.println("Thank you for playing.");
                     System.exit(1);
+
                 default: break;
             }
 

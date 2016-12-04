@@ -1,6 +1,6 @@
 package model;
 /*
- * filename.java
+ * ValidateMove.java
  * Created by Daniel Osvath Londono on 12/2/16.
  */
 
@@ -11,6 +11,7 @@ import static model.SoltrChessModel.*;
  * Class Purpose
  *
  * @author Daniel Osvath Londono
+ * @author Nathan Cassata
  * @since 12/2/16
  */
 public class ValidateMove {
@@ -226,5 +227,6 @@ public class ValidateMove {
     private static boolean piecePresent(BoardPiece[][] myboard, int atX, int atY){
         return !(myboard[atX][atY].getAbbr().equals(BLANK));
     }
+
 
 }

@@ -179,24 +179,32 @@ public class SoltrChessModel extends Observable {
 
         List<Configuration> steps = solver.solveWithPath(config);
 
+        if(steps != null){
 
-        for (int curStep = 1; curStep < steps.size(); curStep++){
+            for (int curStep = 1; curStep < steps.size(); curStep++){
 
-            board = steps.get(curStep).getBoard();
+                board = steps.get(curStep).getBoard();
 
-            setChanged();
-            notifyObservers();
+                setChanged();
+                notifyObservers();
 
-            try{
-                TimeUnit.SECONDS.sleep(1);
-            }catch (InterruptedException e){
+                try{
+                    TimeUnit.SECONDS.sleep(1);
+                }catch (InterruptedException e){
+
+                }
 
             }
 
+        }else {
+            System.out.println("Cannot solve current configuration.");
         }
 
     }
 
+    /**
+     *
+     */
     public void hint(){
 
         SoltrChessConfig config = new SoltrChessConfig(board);
@@ -206,22 +214,26 @@ public class SoltrChessModel extends Observable {
 
         // current not int list -> not winnable.
 
-        for (int i = 0; i < steps.size(); i++){
+        if(steps != null){
+            for (int i = 0; i < steps.size(); i++){
 
-            BoardPiece[][] curboard = steps.get(i).getBoard();
+                BoardPiece[][] curboard = steps.get(i).getBoard();
 
-            if (equalBoards(curboard,board)){
-                board = steps.get(i+1).getBoard();
-                break;
+                if (equalBoards(curboard,board)){
+                    board = steps.get(i+1).getBoard();
+                    break;
+                }
+
             }
 
+            setChanged();
+            notifyObservers();
+
+        }else {
+            System.out.println("Not solvable, no hint.");
         }
 
-        setChanged();
-        notifyObservers();
-
     }
-
 
     /**
      *
