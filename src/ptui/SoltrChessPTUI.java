@@ -50,12 +50,15 @@ public class SoltrChessPTUI implements Observer {
      * Displays the board in text format
      */
     private void displayBoard() {
+
         for(BoardPiece[] row : model.getBoard()){
             for(BoardPiece element : row){
                 System.out.print(element.getAbbr() + " ");
             }
             System.out.print("\n");
         }
+
+        checkGoal();
     }
 
     // CONTROLLER
@@ -87,7 +90,6 @@ public class SoltrChessPTUI implements Observer {
                     originalfile = newFile;
                     tryToOpenFile(newFile,false);
                     initializeView();
-                    checkGoal();
                     break;
 
                 case "restart":
@@ -95,7 +97,6 @@ public class SoltrChessPTUI implements Observer {
                     System.out.println("Restarting game. ");
                     tryToOpenFile(originalfile,false);
                     initializeView();
-                    checkGoal();
                     break;
 
                 case "hint":
