@@ -94,7 +94,6 @@ public class SoltrChessGUI extends Application implements Observer {
      */
     private void updateMethod(Observable o, Object arg) {
         displayBoard();
-        if(model.isGoal()) messageField.setText("Congratulations, you won!");
     }
 
     /**
@@ -134,6 +133,7 @@ public class SoltrChessGUI extends Application implements Observer {
         HBox top = new HBox();
 
         this.messageField = new Label("Loaded " + filename);
+
         top.getChildren().add( messageField );
 
         return top;
@@ -156,7 +156,7 @@ public class SoltrChessGUI extends Application implements Observer {
         restartBtn.setOnAction(event -> {
             tryToOpenFile(filename,false);
             messageField.setText("Game loaded: " + filename);
-//            initializeView();
+            displayBoard();
         });
 
         Button hintBtn = new Button("Hint");
@@ -287,7 +287,6 @@ public class SoltrChessGUI extends Application implements Observer {
 
                 displayBoard();
                 alreadySelected.selected = false;
-//                currentlySelected.selected = false;
             }
         } else {
 
@@ -321,6 +320,9 @@ public class SoltrChessGUI extends Application implements Observer {
      * Displays the board using the model
      */
     private void displayBoard(){
+
+        if(model.isGoal()) messageField.setText(messageField.getText() +
+                " | Congratulations, you won!");
 
         for(int row = 0; row < SoltrChessModel.DIMENSION; row++) {
 
