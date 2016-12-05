@@ -164,8 +164,11 @@ public class SoltrChessGUI extends Application implements Observer {
             if(model.isGoal()){
                 messageField.setText("You won! No moves left.");
             }else {
-                if(!this.model.hint())
+                if(!this.model.hint()) {
                     messageField.setText("No solution possible from current state.");
+                }else{
+                    messageField.setText("Hint was given.");
+                }
             }
         } );
 
@@ -198,7 +201,7 @@ public class SoltrChessGUI extends Application implements Observer {
         if (file != null) {
             filename = file.getPath();
             tryToOpenFile(filename,false);
-            displayBoard();
+            messageField.setText("Game loaded: " + filename);
         }
     }
 
@@ -322,8 +325,8 @@ public class SoltrChessGUI extends Application implements Observer {
      */
     private void displayBoard(){
 
-        if(model.isGoal()) messageField.setText(messageField.getText() +
-                " | Congratulations, you won!");
+        if(model.isGoal()) messageField.setText("Congratulations, you won! | "
+                + messageField.getText());
 
         for(int row = 0; row < SoltrChessModel.DIMENSION; row++) {
 
