@@ -198,6 +198,7 @@ public class SoltrChessGUI extends Application implements Observer {
         if (file != null) {
             filename = file.getPath();
             tryToOpenFile(filename,false);
+            displayBoard();
         }
     }
 
