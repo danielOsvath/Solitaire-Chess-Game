@@ -41,7 +41,7 @@ public class SoltrChessPTUI implements Observer {
     /**
      * Initializes view
      */
-    public void initializeView() {
+    private void initializeView() {
         this.model.addObserver(this);
         update(this.model, null);
     }
@@ -134,10 +134,10 @@ public class SoltrChessPTUI implements Observer {
         try {
             this.model = new SoltrChessModel(filename);
         }catch (FileNotFoundException w){
-            System.out.println("File Not Found");
+            System.out.println("File Not Found \n" + filename);
             if(initial) System.exit(1);
         }catch (MalformedInputException e){
-            System.out.println("Board in file is malformed.");
+            System.out.println("Board in file is malformed. \n" + filename);
             if(initial) System.exit(1);
         }
     }

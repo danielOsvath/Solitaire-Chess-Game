@@ -55,7 +55,7 @@ public class SoltrChessGUI extends Application implements Observer {
     /**
      * Initializes the GUI
      *
-     * @throws Exception
+     * @throws Exception exception
      */
     @Override
     public void init() throws Exception {
@@ -435,17 +435,17 @@ public class SoltrChessGUI extends Application implements Observer {
             }
         }catch (FileNotFoundException w){
             if(initial){
-                System.out.println("File Not Found");
+                System.out.println("File Not Found \n" + filename);
                 System.exit(1);
             }else{
-                createWarningWindow("File Not Found");
+                createWarningWindow("File Not Found \n" + filename);
             }
         }catch (MalformedInputException e){
             if(initial) {
-                System.out.println("Board in file is malformed.");
+                System.out.println("Board in file is malformed. \n" + filename);
                 System.exit(1);
             } else {
-                createWarningWindow("Board in file is malformed.");
+                createWarningWindow("Board in file is malformed. \n" + filename);
             }
         }
     }
