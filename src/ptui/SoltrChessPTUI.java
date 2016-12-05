@@ -157,8 +157,12 @@ public class SoltrChessPTUI implements Observer {
 
 
         if(model.canMovePieceTo(fromX,fromY,toX,toY)) {
+
+            System.out.println(model.getBoard()[fromX][fromY].getName() +
+                    " to (" + toX + "," + toY + ")");
+
             model.movePieceTo(fromX,fromY,toX,toY);
-            checkGoal();
+
         }else {
             System.out.println("\nInvalid move\n");
             displayBoard();
