@@ -325,6 +325,8 @@ public class SoltrChessGUI extends Application implements Observer {
      */
     private void displayBoard(){
 
+        if(model.solveStep != 0) messageField.setText("Step: " + model.solveStep);
+
         if(model.isGoal()) messageField.setText("Congratulations, you won! | "
                 + messageField.getText());
 
@@ -342,8 +344,6 @@ public class SoltrChessGUI extends Application implements Observer {
 
             }
         }
-
-        if(model.solveStep != 0) messageField.setText("Step: " + model.solveStep);
     }
 
     /**
